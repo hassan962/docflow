@@ -1,0 +1,7 @@
+# Keep LF line endings everywhere: these files run inside Linux containers and CI,
+# and Windows checkouts would otherwise rewrite them to CRLF.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.pdf binary

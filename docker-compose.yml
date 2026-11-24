@@ -1,0 +1,96 @@
+# Local development stack: Postgres, S3 (S3Mock), SQS (ElasticMQ), migrations, API, workers.
+#
+#   docker compose up --build -d     start everything
+#   docker compose logs -f worker-ocr
+#   docker compose down -v           stop and delete all local data
+#
+# The design doc named LocalStack for S3 and SQS. LocalStack now requires an account token
+# even for those services, so the stack uses two open-source emulators that speak the same
+# AWS APIs. The application code is identical either way: only endpoint URLs change.
+
+x-app-env: &app-env
+  ENV: local
+  DATABASE_URL: postgresql+psycopg://docflow_app:app_dev_pw@db:5432/docflow
+  MIGRATION_DATABASE_URL: postgresql+psycopg://docflow_owner:owner_dev_pw@db:5432/docflow
+  AWS_ACCESS_KEY_ID: local
+  AWS_SECRET_ACCESS_KEY: local
+  AWS_ENDPOINT_URL_S3: http://s3mock:9090
+  AWS_ENDPOINT_URL_SQS: http://elasticmq:9324
+  S3_PUBLIC_ENDPOINT_URL: http://localhost:9090
+  S3_BUCKET: docflow-local
+  QUEUE_URL_OCR: http://elasticmq:9324/000000000000/docflow-ocr
+  QUEUE_URL_EXTRACT: http://elasticmq:9324/000000000000/docflow-extract
+  QUEUE_URL_VALIDATE: http://elasticmq:9324/000000000000/docflow-validate
+  QUEUE_URL_INDEX: http://elasticmq:9324/000000000000/docflow-index
+
+x-app: &app
+  build: .
+  environment: *app-env
+  env_file:
+    - path: .env
+      required: false
+  depends_on:
+    migrate:
+      condition: service_completed_successfully
+    s3mock:
+      condition: service_started
+    elasticmq:
+      condition: service_started
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: docflow
+      POSTGRES_USER: docflow_owner
+      POSTGRES_PASSWORD: owner_dev_pw
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docflow_owner -d docflow"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  s3mock:
+    image: adobe/s3mock:5.2.3
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS: docflow-local
+      COM_ADOBE_TESTING_S3MOCK_STORE_RETAIN_FILES_ON_EXIT: "true"
+      COM_ADOBE_TESTING_S3MOCK_STORE_ROOT: /s3mockroot  # owned by the image's non-root user
+    ports:
+      - "9090:9090"
+    volumes:
+      - s3data:/s3mockroot
+
+  elasticmq:
+    image: softwaremill/elasticmq-native:1.7.1
+    ports:
+      - "9324:9324"
+    volumes:
+      - ./docker/elasticmq/elasticmq.conf:/opt/elasticmq.conf:ro
+
+  migrate:
+    build: .
+    command: ["sh", "-c", "alembic upgrade head && python scripts/seed.py"]
+    environment: *app-env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    <<: *app
+    ports:
+      - "8000:8000"
+
+  worker-ocr:
+    <<: *app
+    command: ["python", "-m", "docflow_worker", "ocr"]
+    stop_grace_period: 60s  # lets the worker finish the page it is reading
+
+volumes:
+  pgdata:
+  s3data:
