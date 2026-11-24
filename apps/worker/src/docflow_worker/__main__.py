@@ -9,11 +9,13 @@ import sys
 from typing import Any
 
 from docflow_core.config import get_settings
+from docflow_core.extract.llm import OpenAICompatibleClient
 from docflow_core.logs import configure_logging
 from docflow_core.ocr import get_engine
 from docflow_core.queue import SqsQueue
 from docflow_core.storage import S3Store
 from docflow_worker.runner import Deps, StageHandler, run_forever
+from docflow_worker.stages.extract import ExtractStage
 from docflow_worker.stages.ocr import OcrStage
 
 
@@ -21,7 +23,18 @@ def build_handler(stage: str) -> StageHandler[Any]:
     settings = get_settings()
     if stage == "ocr":
         return OcrStage(get_engine(settings))
-    raise SystemExit(f"stage {stage!r} is not implemented yet (available: ocr)")
+    if stage == "extract":
+        if settings.llm_api_key is None:
+            raise SystemExit("LLM_API_KEY is not set; the extract worker cannot start")
+        clients: dict[str, OpenAICompatibleClient] = {}
+
+        def client_for(model: str) -> OpenAICompatibleClient:
+            if model not in clients:  # one client (and connection pool) per model
+                clients[model] = OpenAICompatibleClient(settings, model)
+            return clients[model]
+
+        return ExtractStage(client_for)
+    raise SystemExit(f"stage {stage!r} is not implemented yet (available: ocr, extract)")
 
 
 def main(argv: list[str]) -> None:

@@ -17,7 +17,7 @@ import httpx
 from dotenv import load_dotenv
 
 SUFFIXES = {".pdf", ".png", ".jpg", ".jpeg"}
-TERMINAL = {"failed", "approved", "indexed"}
+TERMINAL = {"failed", "needs_review", "approved", "indexed"}
 
 
 def main() -> None:

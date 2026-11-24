@@ -22,8 +22,8 @@ Built in phases; each phase is usable and tested on its own.
 |---|---|---|
 | 1. Foundation | Workspace, config, versioned schemas, normalisation, Postgres schema with row-level security, API skeleton, Docker Compose | **Done** |
 | 2. Ingestion and OCR | Upload API, object storage, per-stage queues, idempotent workers, OCR adapters, synthetic invoice generator | **Done** |
-| 3. Extraction and confidence | Groq/OpenAI-compatible structured output, prompt builder, grounding to page boxes, calibrated confidence | Next |
-| 4. Validation and review | Rule validators, tool-calling reference checks, routing, React review UI with box overlay | |
+| 3. Extraction and confidence | Groq/OpenAI-compatible structured output, prompt builder, grounding to page boxes, calibrated confidence | **Done** |
+| 4. Validation and review | Rule validators, tool-calling reference checks, routing, React review UI with box overlay | Next |
 | 5. Evaluation and learning loop | Golden/dev sets, metrics, bootstrap promotion gate, few-shot learning from corrections | |
 | 6. Retrieval and Q&A | Chunking, local embeddings, hybrid vector + keyword search, cited answers | |
 | 7. Operations | Observability, cost controls, CI eval gate, Terraform (lean and full AWS modes) | |
@@ -34,7 +34,7 @@ Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) and
 [uv](https://docs.astral.sh/uv/).
 
 ```bash
-cp .env.example .env                 # then add your Groq key (phase 3 onwards)
+cp .env.example .env                 # then set LLM_API_KEY (free key: console.groq.com)
 docker compose up --build -d         # Postgres, S3Mock, ElasticMQ, migrations, API, OCR worker
 docker compose logs migrate | grep "API key"   # first run only: save it as DOCFLOW_API_KEY in .env
 ```
@@ -43,7 +43,7 @@ Try the pipeline with synthetic invoices:
 
 ```bash
 uv run python scripts/generate_invoices.py --n 12 --out data/synthetic
-uv run python scripts/demo_upload.py data/synthetic --until ocr_done
+uv run python scripts/demo_upload.py data/synthetic --until extracted
 ```
 
 - API docs: http://localhost:8000/docs
@@ -54,6 +54,7 @@ uv run python scripts/demo_upload.py data/synthetic --until ocr_done
 |---|---|---|
 | api | 8000 | FastAPI |
 | worker-ocr | none | OCR queue consumer (Tesseract 5.5) |
+| worker-extract | none | LLM extraction (Groq gpt-oss-120b + gpt-oss-20b second opinion) |
 | db | 5432 | Postgres 16 + pgvector |
 | s3mock | 9090 | Local S3 (Adobe S3Mock) |
 | elasticmq | 9324 | Local SQS with dead-letter queues |
@@ -72,12 +73,15 @@ uv run ruff check . && uv run mypy packages/docflow_core/src apps/api/src apps/w
 apps/api/            FastAPI app: upload, document status, presigned page images
 apps/worker/         queue consumers; runner.py is the shared retry/idempotency contract
   stages/ocr.py      rasterise, clean up, OCR, store page images + OCR JSON
+  stages/extract.py  LLM extraction with the active extractor version, usage metering
 packages/docflow_core/
   config.py          one settings class; every setting is an environment variable
   normalise.py       amount/date/name normalisation shared by validators and evals
   schemas/           versioned Pydantic document schemas + registry
   db/                SQLAlchemy models, sessions, SQL migrations with RLS
   ocr/               engine interface, Tesseract/Textract adapters, rasterise, preprocess
+  extract/           prompt, OpenAI-compatible client, grounding, confidence, versions
+  eval/match.py      is each extracted field right (normalised comparison)
   storage.py         S3 key layout, S3 + in-memory stores
   queue.py           stage messages, SQS + in-memory queues
   security.py        API keys (only hashes are stored)
@@ -87,6 +91,8 @@ scripts/
   seed.py            demo tenant, admin and API key
   generate_invoices.py  synthetic invoices with exact labels, three layouts, scan noise
   demo_upload.py     upload a folder through the API and wait for the pipeline
+  calibrate.py       fit confidence calibration + review threshold on a dev set
+  admin.py           list/register/promote extractor versions, reprocess a stage
 docs/                design notes per phase
 ```
 
@@ -104,4 +110,5 @@ docs/                design notes per phase
 
 The reasoning behind each choice is in the phase notes:
 [phase 1, foundation](docs/phase-1-foundation.md) ·
-[phase 2, ingestion and OCR](docs/phase-2-ingestion-ocr.md).
+[phase 2, ingestion and OCR](docs/phase-2-ingestion-ocr.md) ·
+[phase 3, extraction and confidence](docs/phase-3-extraction.md).

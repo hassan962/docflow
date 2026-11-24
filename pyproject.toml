@@ -36,6 +36,7 @@ addopts = "-ra --strict-markers"
 markers = [
     "db: needs a running Postgres (docker compose up db); skipped when it is unreachable",
     "emulators: needs S3Mock and ElasticMQ (docker compose up s3mock elasticmq)",
+    "llm: calls the real LLM provider; opt-in with RUN_LLM_TESTS=1",
 ]
 
 [tool.ruff]

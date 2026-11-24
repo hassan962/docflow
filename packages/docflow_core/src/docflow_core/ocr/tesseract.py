@@ -14,8 +14,11 @@ from docflow_core.ocr import OcrResult, OcrWord
 class TesseractEngine:
     name = "tesseract"
 
-    def __init__(self, lang: str = "eng", psm: int = 3) -> None:
-        # psm 3 = fully automatic page segmentation, right for whole invoice pages.
+    def __init__(self, lang: str = "eng", psm: int = 6) -> None:
+        # psm 6 = read the page as rows of text. The default psm 3 segments the page into
+        # column blocks, which on invoices separates each item from its quantity and amount.
+        # On 41 labelled invoices psm 6 read 98.9% of amounts whole (psm 3: 95.2%) and kept
+        # 98.7% of table rows together (psm 3: 79.7%). See docs/phase-3-extraction.md.
         self.lang = lang
         self.config = f"--psm {psm}"
 
@@ -26,6 +29,7 @@ class TesseractEngine:
         )
         result = parse_tesseract(data, img.width, img.height)
         result.meta["version"] = str(pytesseract.get_tesseract_version())
+        result.meta["psm"] = self.config
         return result
 
 

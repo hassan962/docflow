@@ -91,6 +91,11 @@ services:
     command: ["python", "-m", "docflow_worker", "ocr"]
     stop_grace_period: 60s  # lets the worker finish the page it is reading
 
+  worker-extract:
+    <<: *app
+    command: ["python", "-m", "docflow_worker", "extract"]
+    stop_grace_period: 120s  # an LLM call can take a while; let it finish
+
 volumes:
   pgdata:
   s3data:

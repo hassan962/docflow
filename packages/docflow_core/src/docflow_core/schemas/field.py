@@ -32,6 +32,10 @@ class ExtractedField(BaseModel):
     checks: list[RuleCheck] = Field(default_factory=list)
     source: Literal["llm", "review", "rule"] = "llm"
     status: Literal["auto_approved", "needs_review", "reviewed"] | None = None
+    # The evidence behind ``confidence`` (grounding match, OCR confidence, agreement, raw
+    # score). Shown to reviewers as "why is this flagged", and lets calibration be refitted
+    # from stored extractions without calling the model again.
+    signals: dict[str, Any] = Field(default_factory=dict)
 
     @field_validator("bbox")
     @classmethod

@@ -17,6 +17,7 @@ dependencies = [
     "numpy>=2.1",
     "pypdfium2>=4.30",
     "pytesseract>=0.3.13",
+    "openai>=1.55",
 ]
 
 [build-system]

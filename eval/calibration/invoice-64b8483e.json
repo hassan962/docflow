@@ -1,0 +1,36 @@
+{
+  "fitted_at": "2026-11-24T11:32:01+00:00",
+  "extractor_version_id": "64b8483e-7e62-40e0-b447-9805459d6746",
+  "dev_sets": [
+    "data\\dev",
+    "data\\synthetic",
+    "data\\batch2"
+  ],
+  "documents": 41,
+  "fields": 1001,
+  "field_accuracy": 0.979,
+  "target_precision": 0.995,
+  "review_threshold": 0.9286,
+  "auto_approve_rate": 0.9121,
+  "precision_at_threshold": 0.9967,
+  "calibration": {
+    "thresholds": [
+      0.05,
+      0.1575,
+      0.32,
+      0.8232,
+      0.9702,
+      0.9828,
+      1.0
+    ],
+    "values": [
+      0.1667,
+      0.5,
+      0.6522,
+      0.8824,
+      0.8824,
+      0.9286,
+      0.9989
+    ]
+  }
+}

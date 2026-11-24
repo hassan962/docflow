@@ -57,10 +57,27 @@ class Settings(BaseSettings):
     ocr_dpi: int = Field(default=250, ge=150, le=400)
     max_pages: int = Field(default=20, ge=1)
 
-    # LLM and embeddings.
+    # LLM. Any OpenAI-compatible endpoint: Groq, Gemini's compatibility endpoint, Ollama
+    # (http://localhost:11434/v1), or a paid provider. These values only bootstrap the first
+    # extractor version; after that the active row in extractor_versions decides the model.
     llm_api_key: SecretStr | None = None
     llm_base_url: str = "https://api.groq.com/openai/v1"
-    llm_model: str = "llama-3.3-70b-versatile"
+    llm_model: str = "openai/gpt-oss-120b"
+    # Second opinion for the per-field agreement signal (the providers tried return no token
+    # log-probabilities). A different model gives a more independent check. Empty = off.
+    llm_agreement_model: str | None = "openai/gpt-oss-20b"
+    # json_schema = the provider enforces the schema; json_object = JSON mode only, for
+    # providers without strict structured output (e.g. older Ollama models).
+    llm_response_format: Literal["json_schema", "json_object"] = "json_schema"
+    llm_reasoning_effort: Literal["low", "medium", "high"] | None = "low"
+    llm_timeout_seconds: float = 90
+    # USD per million tokens (input, output). Check groq.com/pricing; on the free tier these
+    # are notional, used for cost-per-page reporting and the promotion gate's cost check.
+    llm_prices: dict[str, tuple[float, float]] = {
+        "openai/gpt-oss-120b": (0.15, 0.60),
+        "openai/gpt-oss-20b": (0.075, 0.30),
+    }
+
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     embedding_dim: int = 384
 

@@ -42,7 +42,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from docflow_core.config import Settings, Stage
-from docflow_core.db.models import Document, StageRun
+from docflow_core.db.models import Document, Page, StageRun
 from docflow_core.db.session import tenant_session
 from docflow_core.errors import PermanentError
 from docflow_core.queue import QueueClient, Received, StageMessage
@@ -63,6 +63,7 @@ class DocumentSnapshot:
     s3_key: str
     content_type: str
     doc_type: str
+    ocr_keys: tuple[str, ...] = ()  # page OCR JSON keys in page order (after the OCR stage)
 
 
 @dataclass
@@ -74,11 +75,12 @@ class Deps:
 
 class StageHandler(Protocol[R]):
     name: Stage
-    next_stage: Stage | None
-    done_status: str  # document status once this stage succeeds
 
     def run(self, doc: DocumentSnapshot, deps: Deps) -> R: ...
     def save(self, session: Session, doc: Document, result: R) -> None: ...
+    def route(self, result: R) -> tuple[str, Stage | None]:
+        """The document's new status and the next stage (None: the pipeline stops here)."""
+        ...
 
 
 class Outcome(enum.StrEnum):
@@ -114,7 +116,17 @@ def _claim(session: Session, msg: StageMessage) -> tuple[Outcome | None, Documen
             None,
             _now(),
         )
-    snapshot = DocumentSnapshot(doc.id, doc.tenant_id, doc.s3_key, doc.content_type, doc.doc_type)
+    ocr_keys = session.scalars(
+        select(Page.ocr_json_key).where(Page.document_id == doc.id).order_by(Page.page_no)
+    ).all()
+    snapshot = DocumentSnapshot(
+        doc.id,
+        doc.tenant_id,
+        doc.s3_key,
+        doc.content_type,
+        doc.doc_type,
+        tuple(k for k in ocr_keys if k),
+    )
     return None, snapshot
 
 
@@ -164,15 +176,13 @@ def handle(received: Received, handler: StageHandler[Any], deps: Deps) -> Outcom
             if doc is None:
                 raise PermanentError("document was deleted while being processed")
             handler.save(session, doc, result)
-            doc.status = handler.done_status
+            doc.status, next_stage = handler.route(result)
             run = _stage_run(session, msg)
             run.status, run.finished_at = "done", _now()
-            if handler.next_stage is not None:
+            if next_stage is not None:
                 deps.queue.send(
                     StageMessage(
-                        tenant_id=msg.tenant_id,
-                        document_id=msg.document_id,
-                        stage=handler.next_stage,
+                        tenant_id=msg.tenant_id, document_id=msg.document_id, stage=next_stage
                     )
                 )
     except PermanentError as exc:

@@ -173,3 +173,20 @@ def test_tesseract_reads_real_text() -> None:
     ImageDraw.Draw(img).text((20, 60), "TOTAL 1180.00", fill=0, font_size=60)
     result = get_engine(Settings(ocr_engine="tesseract")).run(to_png(img))
     assert "1180.00" in " ".join(w.text for w in result.words)
+
+
+def test_visual_lines_rebuild_table_rows_from_column_blocks() -> None:
+    from docflow_core.ocr.layout import visual_lines
+
+    # How Tesseract's psm 3 numbers an invoice table: one "line" per column block.
+    words = [
+        OcrWord("Office", (100, 500, 160, 520), 0.9, line=0),
+        OcrWord("chair", (165, 500, 210, 520), 0.9, line=0),
+        OcrWord("Toner", (100, 540, 160, 560), 0.9, line=1),
+        OcrWord("9", (600, 502, 610, 521), 0.9, line=2),
+        OcrWord("2", (600, 541, 610, 559), 0.9, line=3),
+        OcrWord("1,03,095.00", (800, 499, 900, 519), 0.9, line=4),
+        OcrWord("3,906.00", (800, 540, 880, 560), 0.9, line=5),
+    ]
+    rows = visual_lines(OcrResult(words, 1000, 1400, "tesseract")).lines()
+    assert rows == ["Office chair 9 1,03,095.00", "Toner 2 3,906.00"]

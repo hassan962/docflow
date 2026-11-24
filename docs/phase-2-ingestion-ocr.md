@@ -90,7 +90,9 @@ line amounts, subtotal, tax, total), Tesseract 5.5:
 | psm 11 (sparse text) | 70/78, 89.7% | 0.47 |
 | psm 6 + line removal | 76/78, 97.4% | 0.70 |
 
-Nine documents is a sanity check, not a benchmark. Phase 5 repeats this on the frozen golden
+Nine documents is a sanity check, not a benchmark, and it proved too small: phase 3 measured
+41 documents and switched to psm 6 with visual lines, which keeps table rows together (see
+[phase 3](phase-3-extraction.md)). Phase 5 repeats this on the frozen golden
 set, with Textract as the comparison.
 
 **Engines** sit behind one `OcrEngine` interface: Tesseract (local, free) and AWS Textract
