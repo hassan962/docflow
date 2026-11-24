@@ -101,6 +101,16 @@ services:
     command: ["python", "-m", "docflow_worker", "validate"]
     stop_grace_period: 120s
 
+  # On-demand evaluation (docker compose run --rm eval run --version active --dataset golden).
+  # The "tools" profile keeps it out of a plain `docker compose up`.
+  eval:
+    <<: *app
+    profiles: ["tools"]
+    entrypoint: ["python", "-m", "docflow_core.eval"]
+    volumes:
+      - ./data:/app/data
+      - ./eval:/app/eval
+
   web:
     build: apps/web
     ports:

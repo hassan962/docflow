@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session
 from docflow_core.config import Settings
 from docflow_core.db.models import ExtractorVersion
 from docflow_core.db.publish import publish_schemas
-from docflow_core.extract.confidence import IsotonicCalibrator
+from docflow_core.extract.confidence import Scorer, scorer_from_config
 from docflow_core.extract.prompt import PROMPT_VERSION, build_prompt
 from docflow_core.schemas import registry
 
@@ -32,7 +32,8 @@ class ActiveExtractor:
     model: str
     agreement_model: str | None
     prompt_hash: str
-    calibrator: IsotonicCalibrator
+    scorer: Scorer
+    fewshot_k: int  # corrected examples per prompt; 0 = zero-shot
     review_threshold: float | None
 
 
@@ -45,7 +46,8 @@ def _snapshot(row: ExtractorVersion) -> ActiveExtractor:
         model=row.model,
         agreement_model=cfg.get("agreement_model"),
         prompt_hash=row.prompt_hash,
-        calibrator=IsotonicCalibrator.from_json(cfg.get("calibration")),
+        scorer=scorer_from_config(cfg),
+        fewshot_k=int((cfg.get("fewshot") or {}).get("k", 0)),
         review_threshold=cfg.get("review_threshold"),
     )
 
@@ -130,7 +132,7 @@ def register_candidate(
         schema_version=spec.version,
         model=settings.llm_model,
         prompt_hash=current_template_hash(doc_type, spec.version),
-        fewshot_policy="none",
+        fewshot_policy=f"layout-knn-k{config['fewshot']['k']}" if config.get("fewshot") else "none",
         config=config,
         status="candidate",
         parent_id=parent.id if parent else None,

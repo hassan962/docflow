@@ -10,9 +10,8 @@ from sqlalchemy.orm import Session
 from docflow_core.config import Stage
 from docflow_core.db.models import Document, Page
 from docflow_core.ocr import OcrEngine
-from docflow_core.ocr.layout import visual_lines
-from docflow_core.ocr.preprocess import ocr_input, preprocess
-from docflow_core.ocr.raster import rasterise, to_png
+from docflow_core.ocr.pipeline import read_document
+from docflow_core.ocr.raster import to_png
 from docflow_core.storage import ocr_json_key, page_image_key
 from docflow_worker.runner import Deps, DocumentSnapshot
 
@@ -37,36 +36,29 @@ class OcrStage:
 
     def run(self, doc: DocumentSnapshot, deps: Deps) -> list[PageResult]:
         original = deps.store.get(doc.s3_key)
-        images = rasterise(
+        results: list[PageResult] = []
+        pages = read_document(
             original,
             doc.content_type,
+            self.engine,
             dpi=deps.settings.ocr_dpi,
             max_pages=deps.settings.max_pages,
         )
-        results: list[PageResult] = []
-        for page_no, image in enumerate(images, start=1):
-            clean = preprocess(image)
-            # The stored page is the deskewed, denoised image, so every box the review UI
-            # draws lands on the pixels it came from. OCR reads the same image with ruling
-            # lines erased (pixels whitened, never moved), which stops Tesseract dropping
-            # text inside bordered boxes; the boxes stay valid on the stored image.
-            img_key = page_image_key(doc.tenant_id, doc.id, page_no)
-            deps.store.put(img_key, to_png(clean), "image/png")
-            # Lines are rebuilt from word positions, so a table row stays one line
-            # whatever the engine's own block segmentation did.
-            ocr = visual_lines(self.engine.run(to_png(ocr_input(clean))))
-            json_key = ocr_json_key(doc.tenant_id, doc.id, page_no, self.engine.name)
-            deps.store.put(json_key, ocr.to_json(), "application/json")
+        for page in pages:
+            img_key = page_image_key(doc.tenant_id, doc.id, page.page_no)
+            deps.store.put(img_key, to_png(page.image), "image/png")
+            json_key = ocr_json_key(doc.tenant_id, doc.id, page.page_no, self.engine.name)
+            deps.store.put(json_key, page.ocr.to_json(), "application/json")
             results.append(
                 PageResult(
-                    page_no=page_no,
+                    page_no=page.page_no,
                     image_key=img_key,
                     ocr_json_key=json_key,
-                    width=clean.width,
-                    height=clean.height,
+                    width=page.image.width,
+                    height=page.image.height,
                     engine=self.engine.name,
-                    mean_conf=ocr.mean_conf,
-                    words=len(ocr.words),
+                    mean_conf=page.ocr.mean_conf,
+                    words=len(page.ocr.words),
                 )
             )
         return results

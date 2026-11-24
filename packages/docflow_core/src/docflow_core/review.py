@@ -13,6 +13,7 @@ model on every keystroke.
 from __future__ import annotations
 
 import uuid
+from dataclasses import replace
 from datetime import date
 from typing import Any, Literal
 
@@ -71,9 +72,9 @@ def _reroute(
     values = {k: f["value"] for k, f in fields.items()}
     grounded = {k: f.get("signals", {}).get("match", "none") for k, f in fields.items()}
     ctx = RuleContext(spec, date.today(), settings.validation_max_age_days, grounded=grounded)
-    results = run_rules(values, ctx) + stored_reference_results(fields)
+    results = run_rules(values, ctx) + stored_reference_results(fields, extraction.issues or [])
     threshold = threshold_for(version.doc_type, version.review_threshold)
-    return spec, route(fields, results, version.calibrator, threshold)
+    return spec, route(fields, results, version.scorer, threshold)
 
 
 def _finish_if_clear(
@@ -137,14 +138,40 @@ def correct_field(
     return extraction
 
 
+ISSUES_KEY = "_issues"  # corrections on this key record acknowledged document-level issues
+
+
 def approve_document(
-    session: Session, extraction: Extraction, doc: Document, queue: QueueClient, settings: Settings
+    session: Session,
+    extraction: Extraction,
+    doc: Document,
+    queue: QueueClient,
+    settings: Settings,
+    *,
+    reviewer_id: uuid.UUID | None = None,
+    acknowledge_issues: bool = False,
 ) -> Extraction:
+    """Approve once no field needs review. Document-level issues (say, reference checks that
+    could not run) block approval until a reviewer explicitly acknowledges them; that decision
+    is stored in the corrections audit trail like any other."""
     _, routed = _reroute(session, extraction, settings)
-    if not routed.approved:
-        pending = sorted(k for k, f in routed.fields.items() if f["status"] == "needs_review")
-        raise ReviewError(
-            409, "fields still need review", {"fields": pending, "issues": routed.issues}
+    pending = sorted(k for k, f in routed.fields.items() if f["status"] == "needs_review")
+    if pending or (routed.issues and not acknowledge_issues):
+        message = "fields still need review" if pending else "document issues need acknowledging"
+        raise ReviewError(409, message, {"fields": pending, "issues": routed.issues})
+    if routed.issues:
+        assert reviewer_id is not None, "acknowledging issues needs a reviewer"
+        session.add(
+            Correction(
+                tenant_id=extraction.tenant_id,
+                extraction_id=extraction.id,
+                field=ISSUES_KEY,
+                action="accept",
+                old_value={"value": routed.issues},
+                new_value={"value": routed.issues},
+                reviewer_id=reviewer_id,
+            )
         )
+        routed = replace(routed, issues=[])
     _finish_if_clear(extraction, doc, routed, queue)
     return extraction

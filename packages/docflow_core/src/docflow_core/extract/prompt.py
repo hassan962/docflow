@@ -5,9 +5,9 @@
 3. the OCR text, every line tagged with its page and line number;
 4. the instruction to answer only with JSON that matches the schema.
 
-``template_hash`` covers parts 1, 2 and 4, everything except the document itself. It is the
-``prompt_hash`` stored on an extractor version, so two documents processed by the same version
-were given exactly the same instructions and examples.
+``template_hash`` covers parts 1 and 4: the instructions and the schema. It is the
+``prompt_hash`` stored on an extractor version. Few-shot examples (part 2) are chosen per
+document by the version's few-shot policy and recorded as ``example_ids``.
 """
 
 from __future__ import annotations
@@ -52,7 +52,8 @@ class FewShotExample:
 @dataclass(frozen=True)
 class Prompt:
     messages: list[dict[str, str]]
-    template_hash: str
+    template_hash: str  # the base template: instructions and schema, never the examples
+    example_ids: tuple[str, ...] = ()  # which corrected documents were shown as examples
 
 
 def ocr_text(pages: Sequence[OcrResult]) -> str:
@@ -75,16 +76,18 @@ def build_prompt(
         messages.append({"role": "assistant", "content": ex.answer_json})
     messages.append({"role": "user", "content": f"{ocr_text(pages)}\n\n{INSTRUCTION}"})
 
+    # Examples differ per document, so they are not part of the version's prompt hash (that
+    # would make every document look like prompt drift). The version's fewshot_policy says
+    # how they are chosen; example_ids record which were used.
     template = json.dumps(
-        {
-            "version": PROMPT_VERSION,
-            "system": system,
-            "instruction": INSTRUCTION,
-            "examples": [e.example_id for e in examples],
-        },
+        {"version": PROMPT_VERSION, "system": system, "instruction": INSTRUCTION, "examples": []},
         sort_keys=True,
     )
-    return Prompt(messages=messages, template_hash=hashlib.sha256(template.encode()).hexdigest())
+    return Prompt(
+        messages=messages,
+        template_hash=hashlib.sha256(template.encode()).hexdigest(),
+        example_ids=tuple(e.example_id for e in examples),
+    )
 
 
 def max_tokens_for(spec: SchemaSpec) -> int:

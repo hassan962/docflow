@@ -17,11 +17,12 @@ from sqlalchemy.orm import Session
 
 from docflow_core.config import Stage
 from docflow_core.db.models import Document, Extraction, UsageEvent
-from docflow_core.db.session import unscoped_session
+from docflow_core.db.session import tenant_session, unscoped_session
 from docflow_core.errors import PermanentError
 from docflow_core.extract.extractor import ExtractionOutcome, extract
 from docflow_core.extract.llm import LlmClient
 from docflow_core.extract.versions import active_extractor
+from docflow_core.learn.fewshot import PoolCache, select_examples
 from docflow_core.ocr import OcrResult
 from docflow_core.schemas import registry
 from docflow_worker.runner import Deps, DocumentSnapshot
@@ -41,6 +42,7 @@ class ExtractStage:
 
     def __init__(self, client_for: ClientFactory) -> None:
         self.client_for = client_for
+        self.pools: PoolCache | None = None
 
     def run(self, doc: DocumentSnapshot, deps: Deps) -> ExtractResult:
         if not doc.ocr_keys:
@@ -49,6 +51,12 @@ class ExtractStage:
             version = active_extractor(session, doc.doc_type, deps.settings)
         spec = registry.get(version.doc_type, version.schema_version)
         pages = [OcrResult.from_json(deps.store.get(key)) for key in doc.ocr_keys]
+        examples = []
+        if version.fewshot_k:
+            self.pools = self.pools or PoolCache(deps.store)
+            with tenant_session(doc.tenant_id) as session:  # this tenant's corrections only
+                pool = self.pools.get(session, doc.tenant_id, doc.doc_type)
+            examples = select_examples(pool, pages, version.fewshot_k)
         outcome = extract(
             spec,
             pages,
@@ -56,7 +64,8 @@ class ExtractStage:
             agreement_client=self.client_for(version.agreement_model)
             if version.agreement_model
             else None,
-            calibrator=version.calibrator,
+            scorer=version.scorer,
+            examples=examples,
         )
         if outcome.template_hash != version.prompt_hash:
             # The code's prompt changed but no new version was registered, so results are

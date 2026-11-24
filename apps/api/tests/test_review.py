@@ -16,7 +16,7 @@ from docflow_api.main import create_app
 from docflow_core.config import Settings
 from docflow_core.db.models import Correction, Document, Extraction, User
 from docflow_core.db.session import owner_session, tenant_session
-from docflow_core.extract.confidence import IsotonicCalibrator
+from docflow_core.extract.confidence import CalibratedRawScorer, IsotonicCalibrator
 from docflow_core.extract.versions import active_extractor
 from docflow_core.queue import InMemoryQueue
 from docflow_core.schemas import registry
@@ -59,7 +59,9 @@ class Ctx:
         spec = registry.get("invoice", version.schema_version)
         values = {k: f["value"] for k, f in fields.items()}
         results = run_rules(values, RuleContext(spec, date.today()))
-        routed = route(fields, results, IsotonicCalibrator.identity(), threshold=0.9)
+        routed = route(
+            fields, results, CalibratedRawScorer(IsotonicCalibrator.identity()), threshold=0.9
+        )
         self.doc_id = uuid.uuid4()
         with tenant_session(self.tenant_id) as s:
             s.add(Document(id=self.doc_id, tenant_id=self.tenant_id, s3_key="k", sha256=uuid.uuid4().hex * 2,
@@ -196,3 +198,31 @@ def test_viewers_read_but_cannot_change_and_other_tenants_see_nothing() -> None:
         == 404
     )
     assert ctx.correct("tax", key=other).status_code == 404
+
+
+def test_document_issues_need_an_explicit_acknowledgement() -> None:
+    ctx = Ctx(_fields())
+    with tenant_session(ctx.tenant_id) as s:
+        ex = s.get(Extraction, ctx.extraction_id)
+        assert ex is not None
+        ex.issues = [{"rule": "reference_checks", "passed": False, "field": "_reference",
+                      "message": "reference checks unavailable: RateLimitError"}]  # fmt: skip
+    # Correcting a field must keep the issue. It once dropped it, and the document would have
+    # approved itself unverified.
+    body = ctx.correct("tax").json()
+    assert body["issues"][0]["rule"] == "reference_checks" and body["status"] == "needs_review"
+    r = ctx.client.post(f"/v1/documents/{ctx.doc_id}/approve", headers=ctx.h())
+    assert (
+        r.status_code == 409
+        and r.json()["detail"]["message"] == "document issues need acknowledging"
+    )
+    r = ctx.client.post(
+        f"/v1/documents/{ctx.doc_id}/approve?acknowledge_issues=true", headers=ctx.h()
+    )
+    assert r.status_code == 200 and r.json()["status"] == "approved" and r.json()["issues"] == []
+    with tenant_session(ctx.tenant_id) as s:
+        rows = s.scalars(
+            select(Correction).where(Correction.extraction_id == ctx.extraction_id)
+        ).all()
+    [ack] = [c for c in rows if c.field == "_issues"]
+    assert "RateLimitError" in str(ack.old_value)

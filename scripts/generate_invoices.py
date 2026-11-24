@@ -366,7 +366,8 @@ def degrade(pdf: bytes, spec: NoiseSpec, rng: random.Random, dpi: int = 200) -> 
 # --------------------------------------------------------------------------- driver
 
 
-def generate(n: int, out_dir: Path, seed: int) -> list[dict[str, Any]]:
+def generate(n: int, out_dir: Path, seed: int, stratify: bool = False) -> list[dict[str, Any]]:
+    """``stratify`` cycles every layout x noise combination evenly (for the golden set)."""
     out_dir.mkdir(parents=True, exist_ok=True)
     rng = random.Random(seed)
     fakers = {cur: Faker(loc) for cur, loc in LOCALES.items()}
@@ -377,7 +378,11 @@ def generate(n: int, out_dir: Path, seed: int) -> list[dict[str, Any]]:
     for idx in range(n):
         currency = rng.choices(list(LOCALES), weights=[70, 15, 8, 7])[0]
         layout = LAYOUTS[idx % len(LAYOUTS)]
-        noise = rng.choices(list(NOISE), weights=[40, 40, 20])[0]
+        noise = (
+            list(NOISE)[(idx // len(LAYOUTS)) % len(NOISE)]
+            if stratify
+            else rng.choices(list(NOISE), weights=[40, 40, 20])[0]
+        )
         inv = make_invoice(rng, fakers[currency], currency)
         pdf = render_pdf(inv, layout)
         spec = NOISE[noise]
@@ -413,8 +418,9 @@ def main() -> None:
     parser.add_argument("--n", type=int, default=30)
     parser.add_argument("--out", type=Path, default=Path("data/synthetic"))
     parser.add_argument("--seed", type=int, default=7)
+    parser.add_argument("--stratify", action="store_true", help="even layout x noise mix")
     args = parser.parse_args()
-    rows = generate(args.n, args.out, args.seed)
+    rows = generate(args.n, args.out, args.seed, args.stratify)
     by_noise = {k: sum(r["noise"] == k for r in rows) for k in NOISE}
     print(f"wrote {len(rows)} invoices to {args.out} ({by_noise})")
 

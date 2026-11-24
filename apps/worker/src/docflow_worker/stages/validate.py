@@ -98,7 +98,7 @@ class ValidateStage:
                 calls, reference_error = outcome.calls, outcome.error
 
         threshold = threshold_for(doc.doc_type, version.review_threshold)
-        routed = route(fields, results, version.calibrator, threshold)
+        routed = route(fields, results, version.scorer, threshold)
         return ValidateResult(extraction_id, routed, calls, reference_error)
 
     def save(self, session: Session, doc: Document, result: ValidateResult) -> None:

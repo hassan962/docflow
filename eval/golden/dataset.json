@@ -1,0 +1,8 @@
+{
+  "name": "golden-v1",
+  "seed": 2027,
+  "documents": 27,
+  "generator": "scripts/generate_invoices.py (stratified)",
+  "frozen_at": "2026-11-24",
+  "rules": "never used for prompts, few-shot examples, thresholds or training"
+}

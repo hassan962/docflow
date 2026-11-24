@@ -17,8 +17,7 @@ htmlcov/
 data/
 eval/datasets/**/*.pdf
 eval/datasets/**/*.png
-eval/runs/*.json
-!eval/runs/.gitkeep
+# eval/runs/*.json are committed: they are the evidence behind every reported number
 
 # Node
 node_modules/

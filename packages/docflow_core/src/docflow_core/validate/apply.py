@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from docflow_core.config import review_threshold
-from docflow_core.extract.confidence import IsotonicCalibrator, Signals, raw_score
+from docflow_core.extract.confidence import Scorer, Signals, raw_score
 from docflow_core.validate.rules import RuleResult
 
 DOCUMENT_LEVEL = "_document"
@@ -50,10 +50,18 @@ def _signals(stored: dict[str, Any], validators_passed: bool | None) -> Signals:
     )
 
 
-def stored_reference_results(fields: dict[str, dict[str, Any]]) -> list[RuleResult]:
-    """Reference-check results already on the fields, so re-validating after a correction
-    keeps them without calling the model again."""
-    out = []
+def stored_reference_results(
+    fields: dict[str, dict[str, Any]], issues: Iterable[dict[str, Any]] = ()
+) -> list[RuleResult]:
+    """Reference-check results already stored, so re-validating after a correction keeps them
+    without calling the model again: the per-field checks, and document-level reference
+    issues (a check that could not run). Dropping the latter would let a correction quietly
+    turn an unverified document into an approvable one."""
+    out = [
+        RuleResult("reference_checks", False, (i.get("field", "_reference"),), i.get("message"))
+        for i in issues
+        if i.get("rule") == "reference_checks"
+    ]
     for key, f in fields.items():
         for c in f.get("checks", []):
             if c["rule"] == "reference_checks":
@@ -73,7 +81,7 @@ def stored_reference_results(fields: dict[str, dict[str, Any]]) -> list[RuleResu
 def route(
     fields: dict[str, dict[str, Any]],
     results: Iterable[RuleResult],
-    calibrator: IsotonicCalibrator,
+    scorer: Scorer,
     threshold: float,
 ) -> Routed:
     by_field: dict[str, list[dict[str, Any]]] = {k: [] for k in fields}
@@ -96,8 +104,9 @@ def route(
         if f.get("source") == "review":
             status = "reviewed"  # a person decided; rules are shown, not re-applied
         else:
-            raw = raw_score(_signals(signals, passed))
-            updated["confidence"] = calibrator(raw)
+            evidence = _signals(signals, passed)
+            raw = raw_score(evidence)
+            updated["confidence"] = scorer(evidence)
             updated["signals"] = {**signals, "validators_passed": passed, "raw_score": raw}
             ok = updated["confidence"] >= threshold and passed is not False
             status = "auto_approved" if ok else "needs_review"

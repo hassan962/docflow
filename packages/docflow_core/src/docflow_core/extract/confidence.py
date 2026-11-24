@@ -22,8 +22,10 @@ from __future__ import annotations
 
 import bisect
 import json
+import math
 from collections.abc import Sequence
 from dataclasses import dataclass
+from typing import Any, Protocol
 
 from docflow_core.extract.grounding import Match
 
@@ -144,3 +146,94 @@ def choose_threshold(
         if hits / i >= target_precision:
             best = ThresholdChoice(conf, round(hits / i, 4), round(i / len(pairs), 4))
     return best
+
+
+# --- scorers: Signals -> probability of being right ---------------------------------------------
+
+
+class Scorer(Protocol):
+    def __call__(self, s: Signals) -> float: ...
+
+
+@dataclass(frozen=True)
+class CalibratedRawScorer:
+    """The phase 3 method: hand-made raw score, then isotonic calibration."""
+
+    calibrator: IsotonicCalibrator
+
+    def __call__(self, s: Signals) -> float:
+        return self.calibrator(raw_score(s))
+
+
+FEATURES = (
+    "match_fuzzy", "match_none", "match_absent", "ocr_conf",
+    "agree_true", "agree_false", "rules_pass", "rules_fail", "required_missing",
+)  # fmt: skip
+
+
+def features(s: Signals) -> list[float]:
+    """One row of the learned scorer's design matrix. Baselines: exact match, no second
+    opinion, no rule covering the field (each absent column means "the baseline")."""
+    return [
+        s.similarity if s.match == "fuzzy" else 0.0,
+        float(s.match == "none"),
+        float(s.match == "absent"),
+        s.ocr_conf if s.ocr_conf is not None else 0.0,
+        float(s.agreement is True),
+        float(s.agreement is False),
+        float(s.validators_passed is True),
+        float(s.validators_passed is False),
+        float(s.required_missing),
+    ]
+
+
+@dataclass(frozen=True)
+class LogisticScorer:
+    """P(field is right) = sigmoid(bias + weights . features(signals)).
+
+    Learned from labelled fields instead of hand-tuned, so the data decides how much an
+    agreed absence or a low OCR confidence should count. Weights are readable: a positive
+    weight raises confidence, and its size says by how much (in log-odds).
+    """
+
+    weights: tuple[float, ...]
+    bias: float
+
+    def __call__(self, s: Signals) -> float:
+        z = self.bias + sum(w * x for w, x in zip(self.weights, features(s), strict=True))
+        return round(1.0 / (1.0 + math.exp(-max(-30.0, min(30.0, z)))), 4)
+
+    @classmethod
+    def fit(
+        cls, signals: Sequence[Signals], correct: Sequence[bool], l2: float = 1.0, steps: int = 50
+    ) -> LogisticScorer:
+        """Newton's method on L2-regularised log loss (the bias is not penalised)."""
+        import numpy as np
+
+        x = np.array([[1.0, *features(s)] for s in signals])
+        y = np.array([float(c) for c in correct])
+        w = np.zeros(x.shape[1])
+        penalty = np.eye(x.shape[1]) * l2
+        penalty[0, 0] = 0.0
+        for _ in range(steps):
+            p = 1.0 / (1.0 + np.exp(-np.clip(x @ w, -30, 30)))
+            grad = x.T @ (p - y) + penalty @ w
+            hess = (x * (p * (1 - p))[:, None]).T @ x + penalty
+            step = np.linalg.solve(hess, grad)
+            w -= step
+            if float(np.abs(step).max()) < 1e-8:
+                break
+        return cls(weights=tuple(round(float(v), 4) for v in w[1:]), bias=round(float(w[0]), 4))
+
+    def explain(self) -> dict[str, float]:
+        return {"bias": self.bias, **dict(zip(FEATURES, self.weights, strict=True))}
+
+
+def scorer_from_config(config: dict[str, Any] | None) -> Scorer:
+    """An extractor version's scorer: a learned one if configured, else calibrated raw."""
+    cfg = config or {}
+    learned = cfg.get("scorer")
+    if learned and learned.get("type") == "logistic":
+        weights = tuple(float(learned["weights"][name]) for name in FEATURES)
+        return LogisticScorer(weights=weights, bias=float(learned["bias"]))
+    return CalibratedRawScorer(IsotonicCalibrator.from_json(cfg.get("calibration")))

@@ -134,7 +134,9 @@ def test_prompt_tags_lines_and_hash_covers_the_template_only() -> None:
     assert p1.template_hash == p2.template_hash  # same version, different documents
     ex = FewShotExample("abc", "[p1 l01] x", "{}")
     with_example = build_prompt(SPEC, [INVOICE_PAGE], [ex])
-    assert with_example.template_hash != p1.template_hash
+    # Examples vary per document, so they are recorded, not hashed into the version.
+    assert with_example.template_hash == p1.template_hash
+    assert with_example.example_ids == ("abc",) and p1.example_ids == ()
     assert [m["role"] for m in with_example.messages] == ["system", "user", "assistant", "user"]
     assert max_tokens_for(SPEC) > 1500
     assert ocr_text([page("a b"), page("c")]) == "[p1 l01] a b\n[p2 l01] c"

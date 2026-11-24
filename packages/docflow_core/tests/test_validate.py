@@ -7,7 +7,7 @@ from typing import Any
 
 import pytest
 
-from docflow_core.extract.confidence import IsotonicCalibrator
+from docflow_core.extract.confidence import CalibratedRawScorer, IsotonicCalibrator
 from docflow_core.extract.fields import flatten
 from docflow_core.schemas import registry
 from docflow_core.schemas.invoice import InvoiceV2
@@ -132,7 +132,9 @@ def test_route_sends_flagged_and_low_confidence_fields_to_review() -> None:
         ),
         RuleResult("required_fields", False, ("line_items",), "no line items found"),
     ]
-    routed = route(fields, results, IsotonicCalibrator.identity(), threshold=0.9)
+    routed = route(
+        fields, results, CalibratedRawScorer(IsotonicCalibrator.identity()), threshold=0.9
+    )
     status = {k: f["status"] for k, f in routed.fields.items()}
     assert status == {
         "total": "auto_approved",
@@ -161,6 +163,6 @@ def test_reviewed_fields_keep_their_status_and_reference_results_survive() -> No
     assert kept == [
         RuleResult("reference_checks", False, ("vendor_name",), "m", {"vendor_name": "Acme"})
     ]
-    routed = route(fields, kept, IsotonicCalibrator.identity(), threshold=0.5)
+    routed = route(fields, kept, CalibratedRawScorer(IsotonicCalibrator.identity()), threshold=0.5)
     assert routed.fields["total"]["status"] == "reviewed"
     assert routed.fields["vendor_name"]["status"] == "needs_review"

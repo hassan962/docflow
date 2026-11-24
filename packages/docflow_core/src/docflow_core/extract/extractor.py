@@ -18,7 +18,13 @@ from typing import Any, Literal
 import openai
 from pydantic import ValidationError
 
-from docflow_core.extract.confidence import IsotonicCalibrator, Signals, raw_score
+from docflow_core.extract.confidence import (
+    CalibratedRawScorer,
+    IsotonicCalibrator,
+    Scorer,
+    Signals,
+    raw_score,
+)
 from docflow_core.extract.fields import (
     base_name,
     field_kinds,
@@ -115,7 +121,7 @@ def score_fields(
     data: dict[str, Any],
     pages: Sequence[OcrResult],
     second_opinion: dict[str, Any] | None,
-    calibrator: IsotonicCalibrator,
+    scorer: Scorer,
 ) -> dict[str, ExtractedField]:
     kinds = field_kinds(spec.model)
     required = required_keys(spec.model)
@@ -154,7 +160,7 @@ def score_fields(
         fields[key] = ExtractedField(
             value=value,
             raw=g.raw,
-            confidence=calibrator(raw),
+            confidence=scorer(signals),
             page=g.page,
             bbox=g.bbox,
             source="llm",
@@ -169,7 +175,7 @@ def extract(
     client: LlmClient,
     *,
     agreement_client: LlmClient | None = None,
-    calibrator: IsotonicCalibrator | None = None,
+    scorer: Scorer | None = None,
     examples: Sequence[FewShotExample] = (),
 ) -> ExtractionOutcome:
     prompt = build_prompt(spec, pages, examples)
@@ -185,11 +191,25 @@ def extract(
 
     second: dict[str, Any] | None = None
     if agreement_client is not None:
+        # The second opinion always reads the plain zero-shot prompt: it stays an
+        # independent check of the extractor (including of its few-shot examples), and costs
+        # no extra tokens when examples are added.
+        plain = (
+            request
+            if not examples
+            else ChatRequest(
+                messages=build_prompt(spec, pages).messages,
+                temperature=0.0,
+                max_tokens=request.max_tokens,
+                json_schema=request.json_schema,
+            )
+        )
         try:
-            second, more, _ = _ask(agreement_client, request, spec, retry=False)
+            second, more, _ = _ask(agreement_client, plain, spec, retry=False)
             calls.extend(Call("agreement", c.result) for c in more)
         except Exception:  # a failing second opinion only removes one signal
             second = None
 
-    fields = score_fields(spec, data, pages, second, calibrator or IsotonicCalibrator.identity())
+    default = CalibratedRawScorer(IsotonicCalibrator.identity())
+    fields = score_fields(spec, data, pages, second, scorer or default)
     return ExtractionOutcome("ok", fields, calls, None, prompt.template_hash)

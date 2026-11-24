@@ -101,12 +101,17 @@ export function Review({ documentId, onClose, onOpen }: Props) {
   const approve = useCallback(async () => {
     if (!extraction || !doc || busy) return;
     const pending = order.filter((k) => extraction.fields[k].status === "needs_review");
-    if (pending.length && !confirm(`Accept the ${pending.length} remaining field(s) as they are and approve?`)) return;
+    const issues = extraction.issues.length;
+    const parts = [
+      pending.length ? `accept the ${pending.length} remaining field(s) as they are` : "",
+      issues ? `acknowledge ${issues} document issue(s)` : "",
+    ].filter(Boolean);
+    if (parts.length && !confirm(`Approve and ${parts.join(" and ")}?`)) return;
     setBusy(true);
     try {
       let current = extraction;
       for (const key of pending) current = await api.correct(current.id, key, "accept", null, 0);
-      setExtraction(await api.approve(doc.id));
+      setExtraction(await api.approve(doc.id, issues > 0));
       const queue = await api.queue();
       const next = queue.find((q) => q.document_id !== doc.id);
       if (next) onOpen(next.document_id);

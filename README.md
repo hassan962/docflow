@@ -16,8 +16,10 @@ upload ─▶ OCR ─▶ LLM extraction ─▶ validation ─▶ approved ─▶
 
 ![Review screen: page with field boxes, flagged fields with one-key suggestions](docs/images/review-ui.jpg)
 
-On a 41-invoice dev set: 97.9% of fields extracted correctly; every wrong field (18/18) was
-sent to a person and every auto-approved field (854/854) was right.
+On a frozen golden set nothing was tuned on (27 invoices, every layout × noise mix): 26/27
+invoices extracted perfectly, every wrong field (11/11) sent to a person, every auto-approved
+field right. New versions go live only through a promotion gate (paired bootstrap on the
+golden set), which has already rejected one candidate for letting a single error through.
 
 ## Status
 
@@ -29,8 +31,8 @@ Built in phases; each phase is usable and tested on its own.
 | 2. Ingestion and OCR | Upload API, object storage, per-stage queues, idempotent workers, OCR adapters, synthetic invoice generator | **Done** |
 | 3. Extraction and confidence | Groq/OpenAI-compatible structured output, prompt builder, grounding to page boxes, calibrated confidence | **Done** |
 | 4. Validation and review | Rule validators, tool-calling reference checks, routing, React review UI with box overlay | **Done** |
-| 5. Evaluation and learning loop | Golden/dev sets, metrics, bootstrap promotion gate, few-shot learning from corrections | Next |
-| 6. Retrieval and Q&A | Chunking, local embeddings, hybrid vector + keyword search, cited answers | |
+| 5. Evaluation and learning loop | Golden/dev sets, metrics, bootstrap promotion gate, few-shot learning from corrections | **Done** |
+| 6. Retrieval and Q&A | Chunking, local embeddings, hybrid vector + keyword search, cited answers | Next |
 | 7. Operations | Observability, cost controls, CI eval gate, Terraform (lean and full AWS modes) | |
 
 ## Run it locally
@@ -67,6 +69,16 @@ uv run python scripts/demo_upload.py data/synthetic --until extracted
 | s3mock | 9090 | Local S3 (Adobe S3Mock) |
 | elasticmq | 9324 | Local SQS with dead-letter queues |
 
+## Evaluate a version
+
+```bash
+uv run python scripts/golden.py build                     # regenerate the golden set, verify hashes
+docker compose run --rm eval run --version active --dataset golden
+docker compose run --rm eval compare eval/runs/<active>.json eval/runs/<candidate>.json --decide
+```
+
+Reports land in `eval/runs/` (committed: they are the evidence for every number above).
+
 ## Develop and test
 
 ```bash
@@ -92,7 +104,8 @@ packages/docflow_core/
   db/                SQLAlchemy models, sessions, SQL migrations with RLS
   ocr/               engine interface, Tesseract/Textract adapters, rasterise, preprocess
   extract/           prompt, OpenAI-compatible client, grounding, confidence, versions
-  eval/match.py      is each extracted field right (normalised comparison)
+  eval/              golden set + leakage guard, metrics, runner, caches, bootstrap gate
+  learn/fewshot.py   correction pool and layout-similar few-shot examples (per tenant)
   validate/          rules, tool-calling reference checks, routing
   review.py          accept/edit/approve with re-validation
   storage.py         S3 key layout, S3 + in-memory stores
@@ -108,6 +121,9 @@ scripts/
   admin.py           extractor versions, reprocess a stage, inspect/redrive/purge a DLQ
   seed_reference.py  vendors and POs with known discrepancies, plus expected findings
   routing_report.py  catch rate, auto-approve precision, review load, reference accuracy
+  golden.py          freeze / rebuild the golden set from its committed manifest
+  simulate_review.py stand-in reviewers: clear the queue through the API using dev labels
+  fit_scorer.py      learn a confidence scorer from corrections; register as a candidate
 docs/                design notes per phase
 ```
 
@@ -127,4 +143,5 @@ The reasoning behind each choice is in the phase notes:
 [phase 1, foundation](docs/phase-1-foundation.md) ·
 [phase 2, ingestion and OCR](docs/phase-2-ingestion-ocr.md) ·
 [phase 3, extraction and confidence](docs/phase-3-extraction.md) ·
-[phase 4, validation and review](docs/phase-4-validation-review.md).
+[phase 4, validation and review](docs/phase-4-validation-review.md) ·
+[phase 5, evaluation and learning](docs/phase-5-evaluation-learning.md).

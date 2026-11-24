@@ -151,7 +151,11 @@ def add_correction(
 
 @router.post("/documents/{document_id}/approve", response_model=ExtractionOut)
 def approve(
-    principal: CurrentPrincipal, queue: Queue, settings: AppSettings, document_id: uuid.UUID
+    principal: CurrentPrincipal,
+    queue: Queue,
+    settings: AppSettings,
+    document_id: uuid.UUID,
+    acknowledge_issues: bool = False,
 ) -> ExtractionOut:
     """Approve once no field needs review (409 lists what is left)."""
     _can_edit(principal)
@@ -168,7 +172,10 @@ def approve(
             )
             if ex is None or ex.status == "failed_parse":
                 raise HTTPException(status.HTTP_409_CONFLICT, "nothing extracted to approve")
-            approve_document(s, ex, doc, queue, settings)
+            approve_document(
+                s, ex, doc, queue, settings,
+                reviewer_id=principal.user_id, acknowledge_issues=acknowledge_issues,
+            )  # fmt: skip
             return ExtractionOut.of(ex)
     except ReviewError as err:
         raise _raise(err) from err

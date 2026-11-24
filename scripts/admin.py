@@ -46,6 +46,20 @@ def cmd_list(args: argparse.Namespace) -> None:
 def cmd_register(args: argparse.Namespace) -> None:
     overrides = json.loads(Path(args.calibration).read_text()) if args.calibration else {}
     overrides = {k: overrides[k] for k in ("calibration", "review_threshold") if k in overrides}
+    if args.calibration is None:  # keep the active version's calibration and threshold
+        with owner_session() as s:
+            active = s.scalar(
+                select(ExtractorVersion).where(
+                    ExtractorVersion.doc_type == args.doc_type, ExtractorVersion.status == "active"
+                )
+            )
+            if active is not None:
+                cfg = active.config or {}
+                overrides = {
+                    k: cfg[k] for k in ("calibration", "review_threshold", "scorer") if cfg.get(k)
+                }
+    if args.fewshot_k:
+        overrides["fewshot"] = {"k": args.fewshot_k, "eval_tenant": args.eval_tenant}
     with owner_session() as s:
         row = register_candidate(s, args.doc_type, get_settings(), config_overrides=overrides)
         print(f"registered candidate {row.id} (prompt {row.prompt_hash[:10]}, model {row.model})")
@@ -133,6 +147,8 @@ def main() -> None:
     reg = ext.add_parser("register", help="new candidate from the current code and settings")
     reg.add_argument("--doc-type", default="invoice")
     reg.add_argument("--calibration", help="JSON file written by scripts/calibrate.py")
+    reg.add_argument("--fewshot-k", type=int, default=0, help="corrected examples per prompt")
+    reg.add_argument("--eval-tenant", default="Demo Co", help="tenant whose pool feeds evaluation")
     reg.add_argument("--promote", action="store_true")
     reg.set_defaults(func=cmd_register)
     pro = ext.add_parser("promote")

@@ -108,7 +108,10 @@ export const api = {
       `/v1/extractions/${id}/corrections`,
       json({ field, action, value, seconds_spent: Math.min(seconds, 3600) }),
     ),
-  approve: (documentId: string) => request<Extraction>(`/v1/documents/${documentId}/approve`, { method: "POST" }),
+  approve: (documentId: string, acknowledgeIssues = false) =>
+    request<Extraction>(`/v1/documents/${documentId}/approve?acknowledge_issues=${acknowledgeIssues}`, {
+      method: "POST",
+    }),
   upload: (file: File) => {
     const form = new FormData();
     form.append("file", file);
