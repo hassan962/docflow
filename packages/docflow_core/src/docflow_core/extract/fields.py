@@ -92,6 +92,19 @@ def required_keys(model: type[BaseModel]) -> set[str]:
     return out
 
 
+def allowed_codes(model: type[BaseModel], key: str) -> tuple[Any, ...]:
+    """The permitted values of a code field ("currency" -> ("INR", "USD", ...)), else ()."""
+    base = base_name(key)
+    if "." in base:
+        name, sub = base.split(".", 1)
+        row = item_model(model, name)
+        if row is None:
+            return ()
+        model, base = row, sub
+    ann = _unwrap_optional(typing.get_type_hints(model).get(base))
+    return get_args(ann) if get_origin(ann) is Literal else ()
+
+
 def field_kinds(model: type[BaseModel]) -> dict[str, Kind]:
     """Kinds by base name: {'total': 'amount', 'line_items.amount': 'amount', ...}."""
     hints = typing.get_type_hints(model)

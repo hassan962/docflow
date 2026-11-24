@@ -17,24 +17,28 @@ from docflow_core.storage import S3Store
 from docflow_worker.runner import Deps, StageHandler, run_forever
 from docflow_worker.stages.extract import ExtractStage
 from docflow_worker.stages.ocr import OcrStage
+from docflow_worker.stages.validate import ValidateStage
 
 
 def build_handler(stage: str) -> StageHandler[Any]:
     settings = get_settings()
     if stage == "ocr":
         return OcrStage(get_engine(settings))
+    clients: dict[str, OpenAICompatibleClient] = {}
+
+    def client_for(model: str) -> OpenAICompatibleClient:
+        if model not in clients:  # one client (and connection pool) per model
+            clients[model] = OpenAICompatibleClient(settings, model)
+        return clients[model]
+
     if stage == "extract":
         if settings.llm_api_key is None:
             raise SystemExit("LLM_API_KEY is not set; the extract worker cannot start")
-        clients: dict[str, OpenAICompatibleClient] = {}
-
-        def client_for(model: str) -> OpenAICompatibleClient:
-            if model not in clients:  # one client (and connection pool) per model
-                clients[model] = OpenAICompatibleClient(settings, model)
-            return clients[model]
-
         return ExtractStage(client_for)
-    raise SystemExit(f"stage {stage!r} is not implemented yet (available: ocr, extract)")
+    if stage == "validate":
+        tools_model = settings.llm_tools_model if settings.llm_api_key else None
+        return ValidateStage(client_for, tools_model)  # rules still run without a key
+    raise SystemExit(f"stage {stage!r} is not implemented yet (available: ocr, extract, validate)")
 
 
 def main(argv: list[str]) -> None:

@@ -152,7 +152,7 @@ def make_invoice(rng: random.Random, fake: Faker, currency: str) -> dict[str, An
         if rng.random() < 0.6
         else None,
     )
-    data = label.model_dump(mode="json")
+    data: dict[str, Any] = label.model_dump(mode="json")
     data["_render"] = {
         "vendor_address": fake.address().replace("\n", ", "),
         "buyer": fake.company(),

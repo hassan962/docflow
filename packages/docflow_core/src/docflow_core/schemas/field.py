@@ -21,6 +21,7 @@ class RuleCheck(BaseModel):
     rule: str
     passed: bool
     message: str | None = None
+    suggestion: Any = None  # what the rule thinks the value should be, for one-key accept
 
 
 class ExtractedField(BaseModel):

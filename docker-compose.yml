@@ -96,6 +96,18 @@ services:
     command: ["python", "-m", "docflow_worker", "extract"]
     stop_grace_period: 120s  # an LLM call can take a while; let it finish
 
+  worker-validate:
+    <<: *app
+    command: ["python", "-m", "docflow_worker", "validate"]
+    stop_grace_period: 120s
+
+  web:
+    build: apps/web
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
 volumes:
   pgdata:
   s3data:

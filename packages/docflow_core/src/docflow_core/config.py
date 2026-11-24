@@ -83,6 +83,9 @@ class Settings(BaseSettings):
 
     # Guard rails.
     tenant_daily_budget_usd: float = Field(default=1.0, ge=0)
+    validation_max_age_days: int = 3 * 365  # older invoice dates fail valid_date
+    # Model for the tool-calling reference checks. Empty = skip them.
+    llm_tools_model: str | None = "openai/gpt-oss-20b"
     max_upload_bytes: int = 15 * 1024 * 1024
 
     def queue_url(self, stage: Stage) -> str | None:
@@ -90,15 +93,16 @@ class Settings(BaseSettings):
         return url
 
 
-def review_threshold(doc_type: str) -> float:
+def review_threshold(doc_type: str, default: float | None = None) -> float:
     """Confidence threshold for auto-approval, per document type.
 
-    Read on every call (``REVIEW_THRESHOLD_INVOICE=0.93``) rather than cached, so it can be
-    changed in the running environment's parameters without rebuilding anything.
+    ``REVIEW_THRESHOLD_INVOICE=0.93`` overrides it. The variable is read on every call rather
+    than cached, so it can be changed in the running environment without rebuilding anything.
+    Without it, ``default`` (the threshold calibrated with the extractor version) applies.
     """
     raw = os.environ.get(f"REVIEW_THRESHOLD_{doc_type.upper()}")
     if raw is None:
-        return DEFAULT_REVIEW_THRESHOLD
+        return default if default is not None else DEFAULT_REVIEW_THRESHOLD
     value = float(raw)
     if not 0.0 <= value <= 1.0:
         raise ValueError(f"REVIEW_THRESHOLD_{doc_type.upper()} must be between 0 and 1")

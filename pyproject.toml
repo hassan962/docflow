@@ -31,7 +31,7 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["packages/docflow_core/tests", "apps/api/tests", "apps/worker/tests", "scripts/tests"]
-pythonpath = [".", "scripts"]
+pythonpath = [".", "scripts", "packages/docflow_core/tests"]
 addopts = "-ra --strict-markers"
 markers = [
     "db: needs a running Postgres (docker compose up db); skipped when it is unreachable",
@@ -45,6 +45,10 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# Test data tables read better one case per line.
+"**/tests/**" = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["docflow_core", "docflow_api", "docflow_worker", "generate_invoices", "conftest"]

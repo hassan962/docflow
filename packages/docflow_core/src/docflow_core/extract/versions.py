@@ -50,6 +50,14 @@ def _snapshot(row: ExtractorVersion) -> ActiveExtractor:
     )
 
 
+def version_by_id(session: Session, version_id: Any) -> ActiveExtractor:
+    """Any version, active or not: validation uses the one that made the extraction."""
+    row = session.get(ExtractorVersion, version_id)
+    if row is None:
+        raise ValueError(f"no extractor version {version_id}")
+    return _snapshot(row)
+
+
 def _active(session: Session, doc_type: str) -> ExtractorVersion | None:
     return session.scalar(
         select(ExtractorVersion).where(

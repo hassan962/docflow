@@ -55,3 +55,43 @@ def test_live_extraction_of_a_simple_invoice() -> None:
     assert values["currency"] == "INR" and values["invoice_number"] == "INV-2026-0042"
     assert values["line_items[0].amount"] == "3906.00"
     assert out.fields["total"].signals["match"] == "exact"
+
+
+CASES = [
+    # (invoice values, expected set of (field, severity) findings)
+    ({"vendor_name": "Acme Traders Pvt Ltd", "po_number": "PO-1", "total": "1180.00", "currency": "INR"}, set()),
+    ({"vendor_name": "Acme Tradrs Pvt Ltd", "po_number": None, "total": "1180.00", "currency": "INR"}, {("vendor_name", "warning")}),
+    ({"vendor_name": "Initech Solutions", "po_number": None, "total": "99.00", "currency": "INR"}, {("vendor_name", "error")}),
+    ({"vendor_name": "Acme Traders Pvt Ltd", "po_number": "PO-1", "total": "1200.00", "currency": "INR"}, {("total", "error")}),
+    ({"vendor_name": "Acme Traders Pvt Ltd", "po_number": "PO-2", "total": "500.00", "currency": "INR"}, {("vendor_name", "error"), ("po_number", "error")}),
+]  # fmt: skip
+
+
+@pytest.mark.db
+@pytest.mark.usefixtures("migrated_db")
+@pytest.mark.parametrize(
+    ("values", "expected"), CASES, ids=["match", "spelling", "unknown", "total", "other-vendor"]
+)
+def test_live_reference_checks_reach_the_expected_findings(values: dict, expected: set) -> None:
+    from test_reference import seed_reference
+
+    from conftest import new_tenant
+    from docflow_core.db.session import tenant_session
+    from docflow_core.validate.reference import execute_tool, run_reference_checks
+
+    env = dotenv_values(".env")
+    settings = Settings(llm_api_key=env.get("LLM_API_KEY") or os.environ.get("LLM_API_KEY"))
+    if settings.llm_api_key is None or not settings.llm_tools_model:
+        pytest.skip("LLM_API_KEY is not configured")
+    tenant_id, _, _ = new_tenant()
+    seed_reference(tenant_id)
+
+    def run_tool(name: str, arguments: str) -> dict:
+        with tenant_session(tenant_id) as s:
+            return execute_tool(s, name, arguments)
+
+    client = OpenAICompatibleClient(settings, settings.llm_tools_model)
+    outcome = run_reference_checks(client, values, run_tool)
+    assert outcome.error is None
+    found = {(f.field, f.severity) for f in outcome.findings if f.severity != "info"}
+    assert found == expected, [f.model_dump() for f in outcome.findings]

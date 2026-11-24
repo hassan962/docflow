@@ -22,22 +22,45 @@ from docflow_core.config import Settings
 
 
 @dataclass(frozen=True)
+class ToolCall:
+    id: str
+    name: str
+    arguments: str  # JSON text exactly as the model produced it; validated before use
+
+
+@dataclass(frozen=True)
 class ChatResult:
-    content: str | None  # None when the model stopped before answering
+    content: str | None  # None when the model stopped before answering, or called tools
     model: str
     tokens_in: int
     tokens_out: int
     latency_ms: int
     cost_usd: float
     finish_reason: str | None = None
+    tool_calls: tuple[ToolCall, ...] = ()
+
+    def as_message(self) -> dict[str, Any]:
+        """The assistant turn to append to the conversation, tool calls included."""
+        message: dict[str, Any] = {"role": "assistant", "content": self.content or ""}
+        if self.tool_calls:
+            message["tool_calls"] = [
+                {
+                    "id": c.id,
+                    "type": "function",
+                    "function": {"name": c.name, "arguments": c.arguments},
+                }
+                for c in self.tool_calls
+            ]
+        return message
 
 
 @dataclass(frozen=True)
 class ChatRequest:
-    messages: list[dict[str, str]]
+    messages: list[dict[str, Any]]
     temperature: float = 0.0
     max_tokens: int = 2048
     json_schema: dict[str, Any] | None = None  # strict structured output when set
+    tools: list[dict[str, Any]] | None = None  # function definitions the model may call
 
 
 class LlmClient(Protocol):
@@ -70,7 +93,10 @@ class OpenAICompatibleClient:
             "temperature": request.temperature,
             "max_tokens": request.max_tokens,
         }
-        if request.json_schema is not None and self.settings.llm_response_format == "json_schema":
+        if request.tools:
+            kwargs["tools"] = [{"type": "function", "function": t} for t in request.tools]
+            kwargs["tool_choice"] = "auto"
+        elif request.json_schema is not None and self.settings.llm_response_format == "json_schema":
             kwargs["response_format"] = {
                 "type": "json_schema",
                 "json_schema": {
@@ -99,19 +125,32 @@ class OpenAICompatibleClient:
             latency_ms=latency_ms,
             cost_usd=price(self.settings, self.model, tokens_in, tokens_out),
             finish_reason=choice.finish_reason,
+            tool_calls=tuple(
+                ToolCall(id=c.id, name=c.function.name, arguments=c.function.arguments)
+                for c in (choice.message.tool_calls or [])
+                if c.type == "function"
+            ),
         )
+
+
+Reply = str | None | list[ToolCall]
 
 
 @dataclass
 class ScriptedClient:
-    """Deterministic stand-in for tests: replies come from a list or a function."""
+    """Deterministic stand-in for tests: replies come from a list or a function.
+
+    A reply is the text the model answers with, or a list of ``ToolCall`` it makes.
+    """
 
     model: str = "scripted"
-    replies: list[str | None] = field(default_factory=list)
-    responder: Callable[[ChatRequest], str | None] | None = None
+    replies: list[Reply] = field(default_factory=list)
+    responder: Callable[[ChatRequest], Reply] | None = None
     requests: list[ChatRequest] = field(default_factory=list)
 
     def chat(self, request: ChatRequest) -> ChatResult:
         self.requests.append(request)
-        content = self.responder(request) if self.responder else self.replies.pop(0)
-        return ChatResult(content, self.model, 1000, 200, 5, 0.0003, "stop")
+        reply = self.responder(request) if self.responder else self.replies.pop(0)
+        if isinstance(reply, list):
+            return ChatResult(None, self.model, 800, 60, 5, 0.0002, "tool_calls", tuple(reply))
+        return ChatResult(reply, self.model, 1000, 200, 5, 0.0003, "stop")

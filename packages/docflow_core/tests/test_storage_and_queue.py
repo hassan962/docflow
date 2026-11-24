@@ -94,8 +94,7 @@ def _local_settings() -> Settings:
         aws_endpoint_url_s3="http://localhost:9090",
         aws_endpoint_url_sqs="http://localhost:9324",
         s3_bucket="docflow-local",
-        queue_url_validate="http://localhost:9324/000000000000/docflow-validate",
-        receive_wait_seconds=1,
+        receive_wait_seconds=1,  # no pipeline queue URLs here, on purpose
     )
 
 
@@ -119,10 +118,24 @@ def test_s3_store_against_s3mock() -> None:
 @pytest.mark.emulators
 @pytest.mark.usefixtures("aws_env")
 def test_sqs_queue_against_elasticmq() -> None:
-    """Uses the validate queue, which has no worker yet, so nothing else consumes it."""
-    q = SqsQueue(_local_settings())
-    while q.receive("validate", max_messages=10):  # drain leftovers from earlier runs
-        pass
+    """Runs on a throwaway queue of its own.
+
+    An earlier version used the pipeline's validate queue and "drained" it by receiving
+    without deleting. Every test run then counted as a delivery attempt on real messages,
+    and after three runs SQS dead-lettered 92 of them. Tests never share queues with a
+    running system.
+    """
+    import boto3
+
+    sqs = boto3.client("sqs", endpoint_url="http://localhost:9324", region_name="ap-south-1")
+    url = sqs.create_queue(QueueName=f"test-{uuid.uuid4().hex[:12]}")["QueueUrl"]
+    try:
+        _exercise_queue(SqsQueue(_local_settings().model_copy(update={"queue_url_validate": url})))
+    finally:
+        sqs.delete_queue(QueueUrl=url)
+
+
+def _exercise_queue(q: SqsQueue) -> None:
     msg = StageMessage(tenant_id=uuid.uuid4(), document_id=uuid.uuid4(), stage="validate")
     q.send(msg)
     [received] = q.receive("validate")

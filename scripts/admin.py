@@ -4,6 +4,7 @@
     docker compose exec api python scripts/admin.py extractors register --promote
     docker compose exec api python scripts/admin.py extractors promote <version-id>
     docker compose exec api python scripts/admin.py reprocess --stage extract --status extracted
+    docker compose exec api python scripts/admin.py dlq --stage validate [--redrive | --purge]
 
 Promotion is manual until phase 5's evaluation gate, which calls the same ``promote``.
 """
@@ -14,6 +15,7 @@ import argparse
 import json
 from pathlib import Path
 
+import boto3
 from sqlalchemy import delete, select
 
 from docflow_core.config import STAGES, get_settings
@@ -70,6 +72,8 @@ def cmd_reprocess(args: argparse.Namespace) -> None:
     later = list(STAGES[STAGES.index(args.stage) :])
     with owner_session() as s:
         query = select(Document).where(Document.status == args.status).limit(args.limit)
+        if args.reason:  # e.g. --reason RateLimitError: only documents that failed for that
+            query = query.where(Document.failure_reason.ilike(f"%{args.reason}%"))
         docs = s.scalars(query).all()
         for doc in docs:
             s.execute(
@@ -80,6 +84,44 @@ def cmd_reprocess(args: argparse.Namespace) -> None:
     for tenant_id, doc_id in pairs:  # enqueue after the commit, so workers see the reset
         queue.send(StageMessage(tenant_id=tenant_id, document_id=doc_id, stage=args.stage))
     print(f"queued {len(pairs)} document(s) for {args.stage}")
+
+
+def cmd_dlq(args: argparse.Namespace) -> None:
+    """Dead-letter queues are named after their stage queue with a ``-dlq`` suffix.
+
+    Without a flag: count the messages and show a sample. ``--redrive`` sends each one back
+    to its stage queue (the worker's idempotency makes duplicates harmless); ``--purge``
+    deletes them. Always look before you redrive: a poison message just comes back.
+    """
+    settings = get_settings()
+    source = settings.queue_url(args.stage)
+    if not source:
+        raise SystemExit(f"QUEUE_URL_{args.stage.upper()} is not configured")
+    client = boto3.client(
+        "sqs", region_name=settings.aws_region, endpoint_url=settings.aws_endpoint_url_sqs
+    )
+    dlq = f"{source}-dlq"
+    moved = 0
+    sample: list[str] = []
+    while True:
+        batch = client.receive_message(QueueUrl=dlq, MaxNumberOfMessages=10, WaitTimeSeconds=1)
+        messages = batch.get("Messages", [])
+        if not messages:
+            break
+        for m in messages:
+            if args.redrive:
+                client.send_message(QueueUrl=source, MessageBody=m["Body"])
+            if args.redrive or args.purge:
+                client.delete_message(QueueUrl=dlq, ReceiptHandle=m["ReceiptHandle"])
+            elif len(sample) < 5:
+                sample.append(m["Body"][:160])
+            moved += 1
+        if not (args.redrive or args.purge):
+            break  # peeking: one batch is enough, and the messages reappear on their own
+    verb = "redrove" if args.redrive else "purged" if args.purge else "found (sample)"
+    print(f"{verb} {moved} message(s) in {dlq.rsplit('/', 1)[-1]}")
+    for body in sample:
+        print(f"  {body}")
 
 
 def main() -> None:
@@ -101,7 +143,15 @@ def main() -> None:
     rep.add_argument("--stage", choices=STAGES, required=True)
     rep.add_argument("--status", required=True, help="document status to select, e.g. extracted")
     rep.add_argument("--limit", type=int, default=1000)
+    rep.add_argument("--reason", help="only documents whose failure reason contains this text")
     rep.set_defaults(func=cmd_reprocess)
+
+    dlq = sub.add_parser("dlq", help="inspect, redrive or purge a stage's dead-letter queue")
+    dlq.add_argument("--stage", choices=STAGES, required=True)
+    action = dlq.add_mutually_exclusive_group()
+    action.add_argument("--redrive", action="store_true", help="move messages back to the stage")
+    action.add_argument("--purge", action="store_true", help="delete them (after fixing the cause)")
+    dlq.set_defaults(func=cmd_dlq)
 
     args = parser.parse_args()
     args.func(args)

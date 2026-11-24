@@ -180,6 +180,8 @@ class Extraction(Base):
     status: Mapped[str] = mapped_column(Text, server_default="ok")
     # Bumped on every reviewer change; the corrections table holds the full history.
     revision: Mapped[int] = mapped_column(Integer, server_default="1")
+    # Rule failures that belong to the document rather than one field ("no line items").
+    issues: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, server_default=text("'[]'::jsonb"))
     created_at: Mapped[datetime] = _created()
     updated_at: Mapped[datetime] = _created()
 
