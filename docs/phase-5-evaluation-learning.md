@@ -139,11 +139,43 @@ on the pool picked a same-template neighbour **39/39** times.
 - the second opinion keeps the plain zero-shot prompt, so it stays an independent check and
   costs nothing extra.
 
-**Result: pending.** The golden run of this candidate (version `dfa375a1`, k=2, same
-calibration and threshold as version 3) reached 14 of 27 documents, all straight-through,
-including `syn-2027-0004`, the document whose wrong quantity sank the scorer candidate. It
-then hit the free LLM tier's daily token limit. Completed replies are cached, so the run
-resumes where it stopped. The gate verdict will be recorded here once it finishes.
+**Result: better on every quality number, rejected by the gate.** Version `dfa375a1` uses
+k=2 examples and keeps version 3's calibration and threshold. The free tier's daily token
+limit interrupted its run at 14 of 27 documents. Completed replies are cached, so the run
+resumed three days later without re-asking.
+
+| | Version 3 | Few-shot k=2 |
+|---|---|---|
+| straight-through documents | 26 / 27 | **27 / 27** |
+| macro field F1 | 0.9646 | 0.9650 |
+| line-item rows exactly right | 83 / 84 | **84 / 84** |
+| wrong fields (all sent to review) | 11 | 10 |
+| fields auto-approved | 87.9% | 90.9% |
+| auto-approve precision / catch rate | 100% / 100% | 100% / 100% |
+| calibration error (ECE) | 0.020 | 0.016 |
+| cost per page | $0.00066 | $0.00070 |
+| p95 latency | 13.6 s | **20.9 s** |
+
+```
+[FAIL] accuracy: macro F1 +0.0005 [+0.0000, +0.0015]; auto-approve rate +0.0294 [+0.0000, +0.0881]
+[PASS] safety: auto-approve precision 1.0000 (target 0.995), catch rate 1.000 vs 1.000
+[PASS] no critical regression: all critical fields hold
+[PASS] cost: $0.00070/page (budget $0.01)
+[FAIL] latency: p95 20861 ms vs 13558 ms (+3000 ms allowed)
+gate: FAILED -> candidate marked rejected; version 3 stays active
+```
+
+The examples fixed the one line-item error that version 3 made, the same `syn-2027-0004`
+quantity that sank the scorer candidate. But version 3 was already right on 26 of 27
+documents, so a single fixed document is too little to prove a gain: the lower end of each
+95% interval is exactly 0. The extra latency is not explained by prompt size alone (cost
+rose only 7%). Part of it is probably the free tier's per-minute token limit, which makes
+the client wait and retry on longer prompts. These runs cannot separate the two.
+
+The gate was not loosened after the fact. What this shows is a **ceiling**: few-shot
+examples help where the model makes mistakes, and on this golden set it makes almost none.
+They should be re-tested once the golden set includes layouts the model finds hard, or on a
+paid tier where latency can be measured cleanly.
 
 ## 8. Gaps found and fixed in this phase
 

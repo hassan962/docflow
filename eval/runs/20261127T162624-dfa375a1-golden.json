@@ -1,0 +1,4482 @@
+{
+ "extractor_version_id": "dfa375a1-677f-486e-b8c4-7ecfa559b227",
+ "model": "openai/gpt-oss-120b",
+ "prompt_hash": "337d9875f805b6f13d556eebc373eb6fabbf544115d9770358b2b3bcac7b485c",
+ "dataset": "golden",
+ "dataset_hashes": [
+  "023f7814e6a00de38361ddeb64f7c282992c1d6f2618f386d6f5abbd36740844",
+  "2d060b4485d60aa7b9e7dfa27089f070aa24cf68ced41db83c5ac51f3c031d8e",
+  "38682bf2b69138531b1158b3ff9714faed99133991a3c6adc0234e5e9dd31543",
+  "3889355aca3ee28750ab99ba0c94fd3df83ba399575224314782778deb7e7018",
+  "3f34c3a20cd62bfcfc1d43b792a16259e1f12a8aaf98f456ec3fefe0b600cffe",
+  "4444c6df9a987f56f810a64e6bf8a5a0f9d3c3bb653e1fc11b60236b55f2a4e8",
+  "46864c32cdabbfb46ba923d991a158f24380e1eb09a6b998834ac4fd0fd0fd46",
+  "4e9e69e0db8393dcedfe36609c8bb22436d5cdc62e6a25ea499a7fecd611bacb",
+  "4fcb1ef94312334f15258d80fda21785c9f73fb5dc9b622982ea6ea0a9a0ce45",
+  "57ed6f8ef55152d28e317fdd26ccf2d2d33bba07968e2ab2d72bac733637c359",
+  "5f91c6f9b3ef626dc94912cb7f4e0daac1737af5920f442c489c16fde7f2f65a",
+  "658657446429392ddaf27dd97b3d2b63874ac7746dbb1662e3f13082ad15afec",
+  "6b18f16c78826ff322f548d71ad1394e7c852dc65b6ef17735f5585f2d361733",
+  "7d3236d607d281841a4de72c77136fbeaf50c375888c068d21721016ff54e28e",
+  "844a0321a37f2b62f3112942af6b60480c2f02b3683cdd9c9de68aa322f6a165",
+  "862c1761444a34e297cb03ca52bba8a5af2331f520c873e472781c06d884364a",
+  "887f650aff29cd04272749323615b1f693eb49d6ca6609dec2cd4334aaecc23e",
+  "99e1be20a8fba8c0a389eeb27027b4ad3009b24604a9d71ba0361fd3509739af",
+  "9e4cdbe316868f3cc402fa3631e4981e3699e4273d0ae8b2ad97d06435cbbcce",
+  "a1902e0dd06c3c58a6f1f5f45afc277bc106cbf207b0f179f4b08ffb872392f3",
+  "a708fb2e527316a971d3695a9f1b66c740cc44bf11f1f48c8f13a246116eca32",
+  "b12ac4d5ec1dd86dbef783598dd7092f03466787332c3fd17467a81c357a371b",
+  "b23e7e397218ced5328e75cab87c5ed888ed71c57704b112f96662a617a9b4f7",
+  "c8416d01e5db1eb3f41b189431f105ab19b42f2398d71e784ff2ee40c2445483",
+  "dbd2256e6070b9277a00980ec4eb941d0b5c13712dfc64179e9ee7c583508c0d",
+  "ef02676e23e4396346f771b197749143bfc301225ec401e463c62e91c17d86aa",
+  "f08d224e98d20a2264332f748a8f2eba3c705e8e06d058d8b8375d2c3a6a98d8"
+ ],
+ "created_at": "20261127T162624",
+ "note": "candidate: few-shot k=2 from the correction pool",
+ "summary": {
+  "documents": 27,
+  "macro_f1": 0.965,
+  "straight_through_rate": 1.0,
+  "parse_failures": 0,
+  "line_item_rows": {
+   "expected": 84,
+   "exact": 84,
+   "predicted": 84
+  },
+  "fields": {
+   "currency": {
+    "f1": 1.0,
+    "tp": 27,
+    "fp": 0,
+    "fn": 0,
+    "tn": 0
+   },
+   "invoice_date": {
+    "f1": 1.0,
+    "tp": 27,
+    "fp": 0,
+    "fn": 0,
+    "tn": 0
+   },
+   "invoice_number": {
+    "f1": 1.0,
+    "tp": 27,
+    "fp": 0,
+    "fn": 0,
+    "tn": 0
+   },
+   "line_items.amount": {
+    "f1": 1.0,
+    "tp": 84,
+    "fp": 0,
+    "fn": 0,
+    "tn": 0
+   },
+   "line_items.description": {
+    "f1": 1.0,
+    "tp": 84,
+    "fp": 0,
+    "fn": 0,
+    "tn": 0
+   },
+   "line_items.quantity": {
+    "f1": 1.0,
+    "tp": 84,
+    "fp": 0,
+    "fn": 0,
+    "tn": 0
+   },
+   "line_items.unit_price": {
+    "f1": 1.0,
+    "tp": 84,
+    "fp": 0,
+    "fn": 0,
+    "tn": 0
+   },
+   "po_number": {
+    "f1": 1.0,
+    "tp": 20,
+    "fp": 0,
+    "fn": 0,
+    "tn": 7
+   },
+   "subtotal": {
+    "f1": 1.0,
+    "tp": 23,
+    "fp": 0,
+    "fn": 0,
+    "tn": 4
+   },
+   "tax": {
+    "f1": 1.0,
+    "tp": 23,
+    "fp": 0,
+    "fn": 0,
+    "tn": 4
+   },
+   "total": {
+    "f1": 1.0,
+    "tp": 27,
+    "fp": 0,
+    "fn": 0,
+    "tn": 0
+   },
+   "vendor_name": {
+    "f1": 1.0,
+    "tp": 27,
+    "fp": 0,
+    "fn": 0,
+    "tn": 0
+   },
+   "vendor_tax_id": {
+    "f1": 0.5455,
+    "tp": 12,
+    "fp": 10,
+    "fn": 10,
+    "tn": 5
+   }
+  },
+  "routing": {
+   "auto_approve_rate": 0.9085,
+   "auto_approve_precision": 1.0,
+   "catch_rate": 1.0,
+   "wrong_fields": 10.0,
+   "fields": 579.0
+  },
+  "calibration_error": 0.0156,
+  "cost_per_page_usd": 0.000704,
+  "p95_latency_ms": 20861
+ },
+ "documents": [
+  {
+   "doc_id": "syn-2027-0000",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "line_items.description": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 4,
+   "rows_exact": 4,
+   "rows_predicted": 4,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9989,
+    "line_items[3].unit_price": 0.9989,
+    "line_items[3].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.8824
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "needs_review"
+   },
+   "cost_usd": 0.00081322,
+   "latency_ms": 2532,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0001",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "tax": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 4,
+   "rows_exact": 4,
+   "rows_predicted": 4,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9286,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9989,
+    "line_items[3].unit_price": 0.9989,
+    "line_items[3].amount": 0.9989,
+    "subtotal": 0.8824,
+    "tax": 0.8824,
+    "total": 0.9989,
+    "vendor_tax_id": 0.9989,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "subtotal": "needs_review",
+    "tax": "needs_review",
+    "total": "auto_approved",
+    "vendor_tax_id": "auto_approved",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0007152,
+   "latency_ms": 2125,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0002",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 3,
+   "rows_exact": 3,
+   "rows_predicted": 3,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9286,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0007522500000000001,
+   "latency_ms": 2757,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0003",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "tax": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 4,
+   "rows_exact": 4,
+   "rows_predicted": 4,
+   "confidence": {
+    "vendor_name": 0.6522,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9286,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9989,
+    "line_items[3].unit_price": 0.9989,
+    "line_items[3].amount": 0.9989,
+    "subtotal": 0.6522,
+    "tax": 0.8824,
+    "total": 0.9989,
+    "vendor_tax_id": 0.9286,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "needs_review",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "subtotal": "needs_review",
+    "tax": "needs_review",
+    "total": "auto_approved",
+    "vendor_tax_id": "auto_approved",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0007734700000000001,
+   "latency_ms": 10703,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0004",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 3,
+   "rows_exact": 3,
+   "rows_predicted": 3,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9286,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.6522,
+    "line_items[1].quantity": 0.5,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "needs_review",
+    "line_items[1].quantity": "needs_review",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0007340999999999999,
+   "latency_ms": 14081,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0005",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "line_items.description": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 1,
+   "rows_exact": 1,
+   "rows_predicted": 1,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9286,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.8824
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "needs_review"
+   },
+   "cost_usd": 0.00054292,
+   "latency_ms": 16720,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0006",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 3,
+   "rows_exact": 3,
+   "rows_predicted": 3,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.9989,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "auto_approved",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.00068557,
+   "latency_ms": 18509,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0007",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "po_number": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "line_items.description": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 1,
+   "rows_exact": 1,
+   "rows_predicted": 1,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.6522,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.8824
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "needs_review",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "needs_review"
+   },
+   "cost_usd": 0.00058267,
+   "latency_ms": 9362,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0008",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 5,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 5,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 5,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 5,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[4].description": true,
+    "line_items[4].quantity": true,
+    "line_items[4].unit_price": true,
+    "line_items[4].amount": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 5,
+   "rows_exact": 5,
+   "rows_predicted": 5,
+   "confidence": {
+    "vendor_name": 0.9286,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9286,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9286,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9989,
+    "line_items[3].unit_price": 0.9286,
+    "line_items[3].amount": 0.9989,
+    "line_items[4].description": 0.9989,
+    "line_items[4].quantity": 0.9286,
+    "line_items[4].unit_price": 0.9989,
+    "line_items[4].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9286,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.9286
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "line_items[4].description": "auto_approved",
+    "line_items[4].quantity": "auto_approved",
+    "line_items[4].unit_price": "auto_approved",
+    "line_items[4].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0007767000000000001,
+   "latency_ms": 20705,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0009",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 3,
+   "rows_exact": 3,
+   "rows_predicted": 3,
+   "confidence": {
+    "vendor_name": 0.6522,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "needs_review",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0006786,
+   "latency_ms": 22762,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0010",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 1,
+   "rows_exact": 1,
+   "rows_predicted": 1,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9286,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.00058583,
+   "latency_ms": 11309,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0011",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 3,
+   "rows_exact": 3,
+   "rows_predicted": 3,
+   "confidence": {
+    "vendor_name": 0.8824,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "needs_review",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.00061282,
+   "latency_ms": 14222,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0012",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 1,
+   "rows_exact": 1,
+   "rows_predicted": 1,
+   "confidence": {
+    "vendor_name": 0.6522,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "needs_review",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0006375700000000001,
+   "latency_ms": 17343,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0013",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 3,
+   "rows_exact": 3,
+   "rows_predicted": 3,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.6522,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "needs_review",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0007369499999999999,
+   "latency_ms": 13846,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0014",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "line_items.description": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[5].description": true,
+    "line_items[5].quantity": true,
+    "line_items[5].unit_price": true,
+    "line_items[5].amount": true,
+    "line_items[4].description": true,
+    "line_items[4].quantity": true,
+    "line_items[4].unit_price": true,
+    "line_items[4].amount": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 6,
+   "rows_exact": 6,
+   "rows_predicted": 6,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9286,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9989,
+    "line_items[3].unit_price": 0.9989,
+    "line_items[3].amount": 0.9989,
+    "line_items[4].description": 0.9989,
+    "line_items[4].quantity": 0.9989,
+    "line_items[4].unit_price": 0.9989,
+    "line_items[4].amount": 0.9989,
+    "line_items[5].description": 0.9989,
+    "line_items[5].quantity": 0.9989,
+    "line_items[5].unit_price": 0.9989,
+    "line_items[5].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.8824
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "line_items[4].description": "auto_approved",
+    "line_items[4].quantity": "auto_approved",
+    "line_items[4].unit_price": "auto_approved",
+    "line_items[4].amount": "auto_approved",
+    "line_items[5].description": "auto_approved",
+    "line_items[5].quantity": "auto_approved",
+    "line_items[5].unit_price": "auto_approved",
+    "line_items[5].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "needs_review"
+   },
+   "cost_usd": 0.00078127,
+   "latency_ms": 3277,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0015",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "line_items.description": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 1,
+   "rows_exact": 1,
+   "rows_predicted": 1,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.8824,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.8824
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "needs_review",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "needs_review"
+   },
+   "cost_usd": 0.0006007499999999999,
+   "latency_ms": 2136,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0016",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[5].description": true,
+    "line_items[5].quantity": true,
+    "line_items[5].unit_price": true,
+    "line_items[5].amount": true,
+    "line_items[4].description": true,
+    "line_items[4].quantity": true,
+    "line_items[4].unit_price": true,
+    "line_items[4].amount": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 6,
+   "rows_exact": 6,
+   "rows_predicted": 6,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9989,
+    "line_items[3].unit_price": 0.9989,
+    "line_items[3].amount": 0.9989,
+    "line_items[4].description": 0.9989,
+    "line_items[4].quantity": 0.9989,
+    "line_items[4].unit_price": 0.9989,
+    "line_items[4].amount": 0.9989,
+    "line_items[5].description": 0.9989,
+    "line_items[5].quantity": 0.9989,
+    "line_items[5].unit_price": 0.9989,
+    "line_items[5].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "line_items[4].description": "auto_approved",
+    "line_items[4].quantity": "auto_approved",
+    "line_items[4].unit_price": "auto_approved",
+    "line_items[4].amount": "auto_approved",
+    "line_items[5].description": "auto_approved",
+    "line_items[5].quantity": "auto_approved",
+    "line_items[5].unit_price": "auto_approved",
+    "line_items[5].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0010221,
+   "latency_ms": 3659,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0017",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 3,
+   "rows_exact": 3,
+   "rows_predicted": 3,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.9286
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0006776999999999999,
+   "latency_ms": 2077,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0018",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 1,
+   "rows_exact": 1,
+   "rows_predicted": 1,
+   "confidence": {
+    "vendor_name": 0.6522,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.9989,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "needs_review",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "auto_approved",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.00062108,
+   "latency_ms": 2166,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0019",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 3,
+   "rows_exact": 3,
+   "rows_predicted": 3,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0006774,
+   "latency_ms": 2017,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0020",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "tax": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "line_items.description": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[5].description": true,
+    "line_items[5].quantity": true,
+    "line_items[5].unit_price": true,
+    "line_items[5].amount": true,
+    "line_items[4].description": true,
+    "line_items[4].quantity": true,
+    "line_items[4].unit_price": true,
+    "line_items[4].amount": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 6,
+   "rows_exact": 6,
+   "rows_predicted": 6,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9286,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9286,
+    "line_items[3].unit_price": 0.9989,
+    "line_items[3].amount": 0.9989,
+    "line_items[4].description": 0.9989,
+    "line_items[4].quantity": 0.9989,
+    "line_items[4].unit_price": 0.9989,
+    "line_items[4].amount": 0.9989,
+    "line_items[5].description": 0.9989,
+    "line_items[5].quantity": 0.8824,
+    "line_items[5].unit_price": 0.9989,
+    "line_items[5].amount": 0.9989,
+    "subtotal": 0.8824,
+    "tax": 0.8824,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.8824
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "line_items[4].description": "auto_approved",
+    "line_items[4].quantity": "auto_approved",
+    "line_items[4].unit_price": "auto_approved",
+    "line_items[4].amount": "auto_approved",
+    "line_items[5].description": "auto_approved",
+    "line_items[5].quantity": "needs_review",
+    "line_items[5].unit_price": "auto_approved",
+    "line_items[5].amount": "auto_approved",
+    "subtotal": "needs_review",
+    "tax": "needs_review",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "needs_review"
+   },
+   "cost_usd": 0.0008188500000000001,
+   "latency_ms": 15322,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0021",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 4,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 4,
+   "rows_exact": 4,
+   "rows_predicted": 4,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9286,
+    "invoice_date": 0.6522,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9989,
+    "line_items[3].unit_price": 0.9989,
+    "line_items[3].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.9286
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "needs_review",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.00066352,
+   "latency_ms": 19704,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0022",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "tax": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 2,
+   "rows_exact": 2,
+   "rows_predicted": 2,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "subtotal": 0.8824,
+    "tax": 0.8824,
+    "total": 0.9989,
+    "vendor_tax_id": 0.9989,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "subtotal": "needs_review",
+    "tax": "needs_review",
+    "total": "auto_approved",
+    "vendor_tax_id": "auto_approved",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0006833200000000001,
+   "latency_ms": 18355,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0023",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 1
+    },
+    "line_items.description": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 1,
+   "rows_exact": 1,
+   "rows_predicted": 1,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.8824
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "needs_review"
+   },
+   "cost_usd": 0.00055837,
+   "latency_ms": 17202,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0024",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 1,
+   "rows_exact": 1,
+   "rows_predicted": 1,
+   "confidence": {
+    "vendor_name": 0.6522,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "needs_review",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.00058732,
+   "latency_ms": 10716,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0025",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 5,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 5,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 5,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 5,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": false,
+    "po_number": true,
+    "line_items[4].description": true,
+    "line_items[4].quantity": true,
+    "line_items[4].unit_price": true,
+    "line_items[4].amount": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 5,
+   "rows_exact": 5,
+   "rows_predicted": 5,
+   "confidence": {
+    "vendor_name": 0.9989,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.9989,
+    "line_items[0].unit_price": 0.9989,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.9989,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9989,
+    "line_items[3].unit_price": 0.9989,
+    "line_items[3].amount": 0.9989,
+    "line_items[4].description": 0.9989,
+    "line_items[4].quantity": 0.9989,
+    "line_items[4].unit_price": 0.9989,
+    "line_items[4].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.6522,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "auto_approved",
+    "line_items[0].unit_price": "auto_approved",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "auto_approved",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "line_items[4].description": "auto_approved",
+    "line_items[4].quantity": "auto_approved",
+    "line_items[4].unit_price": "auto_approved",
+    "line_items[4].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0008313,
+   "latency_ms": 20519,
+   "parse_failed": false
+  },
+  {
+   "doc_id": "syn-2027-0026",
+   "fields": {
+    "vendor_name": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "invoice_date": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "currency": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "subtotal": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "tax": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "total": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "vendor_tax_id": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "po_number": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.description": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.quantity": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.unit_price": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "line_items.amount": {
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    }
+   },
+   "correct": {
+    "vendor_name": true,
+    "invoice_number": true,
+    "invoice_date": true,
+    "currency": true,
+    "subtotal": true,
+    "tax": true,
+    "total": true,
+    "vendor_tax_id": true,
+    "po_number": true,
+    "line_items[5].description": true,
+    "line_items[5].quantity": true,
+    "line_items[5].unit_price": true,
+    "line_items[5].amount": true,
+    "line_items[4].description": true,
+    "line_items[4].quantity": true,
+    "line_items[4].unit_price": true,
+    "line_items[4].amount": true,
+    "line_items[3].description": true,
+    "line_items[3].quantity": true,
+    "line_items[3].unit_price": true,
+    "line_items[3].amount": true,
+    "line_items[2].description": true,
+    "line_items[2].quantity": true,
+    "line_items[2].unit_price": true,
+    "line_items[2].amount": true,
+    "line_items[1].description": true,
+    "line_items[1].quantity": true,
+    "line_items[1].unit_price": true,
+    "line_items[1].amount": true,
+    "line_items[0].description": true,
+    "line_items[0].quantity": true,
+    "line_items[0].unit_price": true,
+    "line_items[0].amount": true
+   },
+   "straight_through": true,
+   "rows_expected": 6,
+   "rows_exact": 6,
+   "rows_predicted": 6,
+   "confidence": {
+    "vendor_name": 0.9286,
+    "invoice_number": 0.9989,
+    "invoice_date": 0.9989,
+    "currency": 0.9989,
+    "line_items[0].description": 0.9989,
+    "line_items[0].quantity": 0.8824,
+    "line_items[0].unit_price": 0.8824,
+    "line_items[0].amount": 0.9989,
+    "line_items[1].description": 0.9989,
+    "line_items[1].quantity": 0.8824,
+    "line_items[1].unit_price": 0.9989,
+    "line_items[1].amount": 0.9989,
+    "line_items[2].description": 0.9989,
+    "line_items[2].quantity": 0.9989,
+    "line_items[2].unit_price": 0.9989,
+    "line_items[2].amount": 0.9989,
+    "line_items[3].description": 0.9989,
+    "line_items[3].quantity": 0.9989,
+    "line_items[3].unit_price": 0.9989,
+    "line_items[3].amount": 0.9989,
+    "line_items[4].description": 0.9989,
+    "line_items[4].quantity": 0.9286,
+    "line_items[4].unit_price": 0.9989,
+    "line_items[4].amount": 0.9989,
+    "line_items[5].description": 0.9989,
+    "line_items[5].quantity": 0.9286,
+    "line_items[5].unit_price": 0.9989,
+    "line_items[5].amount": 0.9989,
+    "subtotal": 0.9989,
+    "tax": 0.9989,
+    "total": 0.9989,
+    "vendor_tax_id": 0.8824,
+    "po_number": 0.9989
+   },
+   "status": {
+    "vendor_name": "auto_approved",
+    "invoice_number": "auto_approved",
+    "invoice_date": "auto_approved",
+    "currency": "auto_approved",
+    "line_items[0].description": "auto_approved",
+    "line_items[0].quantity": "needs_review",
+    "line_items[0].unit_price": "needs_review",
+    "line_items[0].amount": "auto_approved",
+    "line_items[1].description": "auto_approved",
+    "line_items[1].quantity": "needs_review",
+    "line_items[1].unit_price": "auto_approved",
+    "line_items[1].amount": "auto_approved",
+    "line_items[2].description": "auto_approved",
+    "line_items[2].quantity": "auto_approved",
+    "line_items[2].unit_price": "auto_approved",
+    "line_items[2].amount": "auto_approved",
+    "line_items[3].description": "auto_approved",
+    "line_items[3].quantity": "auto_approved",
+    "line_items[3].unit_price": "auto_approved",
+    "line_items[3].amount": "auto_approved",
+    "line_items[4].description": "auto_approved",
+    "line_items[4].quantity": "auto_approved",
+    "line_items[4].unit_price": "auto_approved",
+    "line_items[4].amount": "auto_approved",
+    "line_items[5].description": "auto_approved",
+    "line_items[5].quantity": "auto_approved",
+    "line_items[5].unit_price": "auto_approved",
+    "line_items[5].amount": "auto_approved",
+    "subtotal": "auto_approved",
+    "tax": "auto_approved",
+    "total": "auto_approved",
+    "vendor_tax_id": "needs_review",
+    "po_number": "auto_approved"
+   },
+   "cost_usd": 0.0008558999999999999,
+   "latency_ms": 20861,
+   "parse_failed": false
+  }
+ ]
+}

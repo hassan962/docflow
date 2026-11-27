@@ -19,7 +19,9 @@ upload ─▶ OCR ─▶ LLM extraction ─▶ validation ─▶ approved ─▶
 On a frozen golden set nothing was tuned on (27 invoices, every layout × noise mix): 26/27
 invoices extracted perfectly, every wrong field (11/11) sent to a person, every auto-approved
 field right. New versions go live only through a promotion gate (paired bootstrap on the
-golden set), which has already rejected one candidate for letting a single error through.
+golden set). It has rejected both candidates so far: a learned scorer that let one error
+through, and few-shot examples whose small gain (27/27 perfect) was not statistically proven
+and cost too much latency.
 
 ## Status
 
